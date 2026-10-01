@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#От_Омска_не_убежишь — километры клуба</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f1eb;color:#222}
+  .wrap{max-width:1100px;margin:auto;padding:28px 18px 50px}
+  header{background:#202020;color:white;border-radius:24px;padding:30px;margin-bottom:20px}
+  h1{margin:0 0 8px;font-size:clamp(28px,5vw,48px)}
+  .sub{opacity:.72}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+  button{border:0;border-radius:999px;padding:10px 17px;background:white;cursor:pointer;font-weight:700}
+  button.active{background:#222;color:white}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .card{background:white;border-radius:18px;padding:20px}
+  .label{font-size:13px;color:#777;margin-bottom:8px}
+  .value{font-size:30px;font-weight:800}
+  .unit{font-size:14px;color:#777}
+  .grid{display:grid;grid-template-columns:1.35fr .9fr;gap:16px;margin-top:16px}
+  section{background:white;border-radius:20px;padding:22px}
+  h2{margin:0 0 18px;font-size:21px}
+  .rank{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee}
+  .rank:last-child{border-bottom:0}
+  .place{width:28px;font-weight:800}
+  .name{flex:1;font-weight:700}
+  .km{font-weight:800}
+  .bar{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin-top:6px}
+  .bar>i{display:block;height:100%;background:#222;border-radius:99px}
+  .month{display:grid;grid-template-columns:70px 1fr 65px;gap:10px;align-items:center;margin:12px 0}
+  .monthbar{height:12px;background:#eee;border-radius:99px;overflow:hidden}
+  .monthbar i{display:block;height:100%;background:#555}
+  .note{margin-top:16px;color:#777;font-size:13px}
+  @media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+  @media(max-width:480px){.cards{grid-template-columns:1fr 1fr}.value{font-size:23px}.card{padding:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>#От_Омска_не_убежишь</h1>
+  <div class="sub">Километры клуба · первая версия статистики</div>
+</header>
+
+<div class="tabs">
+  <button class="active" onclick="setPeriod('month',this)">Октябрь</button>
+  <button onclick="setPeriod('quarter',this)">IV квартал</button>
+  <button onclick="setPeriod('year',this)">2026</button>
+  <button onclick="setPeriod('all',this)">Всё время</button>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="label">Километраж клуба</div><div class="value" id="total">0</div><div class="unit">км</div></div>
+  <div class="card"><div class="label">Участников</div><div class="value" id="people">0</div><div class="unit">бегунов</div></div>
+  <div class="card"><div class="label">Тренировок</div><div class="value" id="runs">0</div><div class="unit">пробежек</div></div>
+  <div class="card"><div class="label">Среднее</div><div class="value" id="avg">0</div><div class="unit">км / участника</div></div>
+</div>
+
+<div class="grid">
+<section>
+  <h2>🏆 Рейтинг участников</h2>
+  <div id="ranking"></div>
+</section>
+
+<section>
+  <h2>📊 Километраж по месяцам</h2>
+  <div id="months"></div>
+  <div class="note">В демонстрационной версии стоят тестовые данные. Их можно заменить данными клуба.</div>
+</section>
+</div>
+</div>
+
+<script>
+const data = [
+  {date:'2026-10-01', name:'Катя', km:6.2},
+  {date:'2026-10-01', name:'Маша', km:5.0},
+  {date:'2026-10-02', name:'Катя', km:8.1},
+  {date:'2026-10-02', name:'Даша', km:7.3},
+  {date:'2026-10-03', name:'Анна', km:10.0},
+  {date:'2026-10-03', name:'Маша', km:6.4},
+  {date:'2026-10-05', name:'Даша', km:5.5},
+  {date:'2026-10-05', name:'Катя', km:7.0},
+  {date:'2026-10-07', name:'Анна', km:8.2},
+  {date:'2026-10-08', name:'Маша', km:5.7},
+  {date:'2026-10-10', name:'Катя', km:9.0},
+  {date:'2026-10-11', name:'Даша', km:8.0}
+];
+
+let period='month';
+const months=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+
+function filtered(){
+  return data.filter(x=>{
+    const d=new Date(x.date+'T12:00:00');
+    if(period==='month') return d.getFullYear()===2026 && d.getMonth()===9;
+    if(period==='quarter') return d.getFullYear()===2026 && d.getMonth()>=9;
+    if(period==='year') return d.getFullYear()===2026;
+    return true;
+  });
+}
+function render(){
+  const arr=filtered();
+  const total=arr.reduce((s,x)=>s+x.km,0);
+  const names=[...new Set(arr.map(x=>x.name))];
+  document.getElementById('total').textContent=total.toFixed(1);
+  document.getElementById('people').textContent=names.length;
+  document.getElementById('runs').textContent=arr.length;
+  document.getElementById('avg').textContent=names.length?(total/names.length).toFixed(1):'0';
+
+  const sums={}; arr.forEach(x=>sums[x.name]=(sums[x.name]||0)+x.km);
+  const ranking=Object.entries(sums).sort((a,b)=>b[1]-a[1]);
+  const max=ranking[0]?.[1]||1;
+  document.getElementById('ranking').innerHTML=ranking.map((x,i)=>`
+    <div class="rank"><div class="place">${['🥇','🥈','🥉'][i]||i+1}</div>
+    <div class="name">${x[0]}<div class="bar"><i style="width:${x[1]/max*100}%"></i></div></div>
+    <div class="km">${x[1].toFixed(1)} км</div></div>`).join('') || '<div class="note">Пока нет данных</div>';
+
+  const ms=Array(12).fill(0);
+  data.filter(x=>new Date(x.date+'T12:00:00').getFullYear()===2026).forEach(x=>ms[new Date(x.date+'T12:00:00').getMonth()]+=x.km);
+  const mm=Math.max(...ms,1);
+  document.getElementById('months').innerHTML=ms.map((v,i)=>`
+    <div class="month"><b>${months[i]}</b><div class="monthbar"><i style="width:${v/mm*100}%"></i></div><b>${v.toFixed(1)}</b></div>`).join('');
+}
+function setPeriod(p,btn){period=p;document.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
+render();
+</script>
+</body>
+</html>
