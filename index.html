@@ -73,58 +73,365 @@
 </div>
 
 <script>
-const data = [
-  {date:'2026-10-01', name:'Катя', km:6.2},
-  {date:'2026-10-01', name:'Маша', km:5.0},
-  {date:'2026-10-02', name:'Катя', km:8.1},
-  {date:'2026-10-02', name:'Даша', km:7.3},
-  {date:'2026-10-03', name:'Анна', km:10.0},
-  {date:'2026-10-03', name:'Маша', km:6.4},
-  {date:'2026-10-05', name:'Даша', km:5.5},
-  {date:'2026-10-05', name:'Катя', km:7.0},
-  {date:'2026-10-07', name:'Анна', km:8.2},
-  {date:'2026-10-08', name:'Маша', km:5.7},
-  {date:'2026-10-10', name:'Катя', km:9.0},
-  {date:'2026-10-11', name:'Даша', km:8.0}
+const SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQan5aWH0h1auf7wBZbeTlRkgK3WreXEg24CjR0o-zo5aGvLGyFtTNK11pTCFJBNN0H_aC2thKuHjA4/pub?gid=2014016142&single=true&output=csv';
+
+let period = 'all';
+let sheetData = {
+  totalKm: 0,
+  runs: 0,
+  people: 0,
+  avg: 0,
+  ranking: [],
+  months: []
+};
+
+const monthsNames = [
+  'Янв','Фев','Мар','Апр','Май','Июн',
+  'Июл','Авг','Сен','Окт','Ноя','Дек'
 ];
 
-let period='month';
-const months=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+/* ---------- CSV ---------- */
 
-function filtered(){
-  return data.filter(x=>{
-    const d=new Date(x.date+'T12:00:00');
-    if(period==='month') return d.getFullYear()===2026 && d.getMonth()===9;
-    if(period==='quarter') return d.getFullYear()===2026 && d.getMonth()>=9;
-    if(period==='year') return d.getFullYear()===2026;
-    return true;
-  });
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = '';
+  let quotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && quotes && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      quotes = !quotes;
+    } else if (char === ',' && !quotes) {
+      row.push(cell);
+      cell = '';
+    } else if ((char === '\n' || char === '\r') && !quotes) {
+      if (char === '\r' && next === '\n') i++;
+
+      row.push(cell);
+      cell = '';
+
+      if (row.some(x => x.trim() !== '')) {
+        rows.push(row);
+      }
+
+      row = [];
+    } else {
+      cell += char;
+    }
+  }
+
+  row.push(cell);
+
+  if (row.some(x => x.trim() !== '')) {
+    rows.push(row);
+  }
+
+  return rows;
 }
-function render(){
-  const arr=filtered();
-  const total=arr.reduce((s,x)=>s+x.km,0);
-  const names=[...new Set(arr.map(x=>x.name))];
-  document.getElementById('total').textContent=total.toFixed(1);
-  document.getElementById('people').textContent=names.length;
-  document.getElementById('runs').textContent=arr.length;
-  document.getElementById('avg').textContent=names.length?(total/names.length).toFixed(1):'0';
 
-  const sums={}; arr.forEach(x=>sums[x.name]=(sums[x.name]||0)+x.km);
-  const ranking=Object.entries(sums).sort((a,b)=>b[1]-a[1]);
-  const max=ranking[0]?.[1]||1;
-  document.getElementById('ranking').innerHTML=ranking.map((x,i)=>`
-    <div class="rank"><div class="place">${['🥇','🥈','🥉'][i]||i+1}</div>
-    <div class="name">${x[0]}<div class="bar"><i style="width:${x[1]/max*100}%"></i></div></div>
-    <div class="km">${x[1].toFixed(1)} км</div></div>`).join('') || '<div class="note">Пока нет данных</div>';
+/* ---------- загрузка Google Sheets ---------- */
 
-  const ms=Array(12).fill(0);
-  data.filter(x=>new Date(x.date+'T12:00:00').getFullYear()===2026).forEach(x=>ms[new Date(x.date+'T12:00:00').getMonth()]+=x.km);
-  const mm=Math.max(...ms,1);
-  document.getElementById('months').innerHTML=ms.map((v,i)=>`
-    <div class="month"><b>${months[i]}</b><div class="monthbar"><i style="width:${v/mm*100}%"></i></div><b>${v.toFixed(1)}</b></div>`).join('');
+async function loadData() {
+  try {
+    const response = await fetch(SHEET_URL + '&_=' + Date.now());
+
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить таблицу');
+    }
+
+    const csv = await response.text();
+    const rows = parseCSV(csv);
+
+    /*
+      СТРУКТУРА ЛИСТА "Сайт":
+
+      A:B — общая статистика
+      D:F — рейтинг
+      H:J — месяцы
+    */
+
+    // Общая статистика
+    sheetData.totalKm = parseFloat(
+      String(rows[0]?.[1] || '0').replace(',', '.')
+    ) || 0;
+
+    sheetData.runs = parseInt(
+      rows[1]?.[1] || '0'
+    ) || 0;
+
+    sheetData.people = parseInt(
+      rows[2]?.[1] || '0'
+    ) || 0;
+
+    sheetData.avg = parseFloat(
+      String(rows[3]?.[1] || '0').replace(',', '.')
+    ) || 0;
+
+
+    // Рейтинг участников
+    sheetData.ranking = [];
+
+    for (let i = 2; i < rows.length; i++) {
+      const place = rows[i]?.[3];
+      const name = rows[i]?.[4];
+      const km = rows[i]?.[5];
+
+      if (name && name.trim() !== '') {
+        sheetData.ranking.push({
+          place: place || '',
+          name: name.trim(),
+          km: parseFloat(
+            String(km || '0').replace(',', '.')
+          ) || 0
+        });
+      }
+    }
+
+
+    // Месячная статистика
+    sheetData.months = [];
+
+    for (let i = 1; i < rows.length; i++) {
+      const month = rows[i]?.[7];
+      const km = rows[i]?.[8];
+      const runs = rows[i]?.[9];
+
+      if (month && /^\d{4}-\d{2}$/.test(month.trim())) {
+        sheetData.months.push({
+          month: month.trim(),
+          km: parseFloat(
+            String(km || '0').replace(',', '.')
+          ) || 0,
+          runs: parseInt(runs || '0') || 0
+        });
+      }
+    }
+
+    render();
+
+  } catch (error) {
+    console.error(error);
+
+    document.getElementById('ranking').innerHTML =
+      '<div class="note">Не удалось загрузить данные</div>';
+
+    document.getElementById('months').innerHTML =
+      '<div class="note">Не удалось загрузить данные</div>';
+  }
 }
-function setPeriod(p,btn){period=p;document.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
-render();
+
+
+/* ---------- фильтр периода ---------- */
+
+function getPeriodData() {
+
+  // Всё время
+  if (period === 'all') {
+    return {
+      km: sheetData.totalKm,
+      runs: sheetData.runs
+    };
+  }
+
+  const now = new Date();
+
+  let filtered = [];
+
+  if (period === 'month') {
+
+    // Берём последний месяц из таблицы
+    if (sheetData.months.length) {
+      const latest = sheetData.months[
+        sheetData.months.length - 1
+      ].month;
+
+      filtered = sheetData.months.filter(
+        x => x.month === latest
+      );
+    }
+
+  } else if (period === 'quarter') {
+
+    const latest = sheetData.months[
+      sheetData.months.length - 1
+    ];
+
+    if (latest) {
+      const year = parseInt(latest.month.substring(0, 4));
+      const month = parseInt(latest.month.substring(5, 7));
+
+      const quarter = Math.floor((month - 1) / 3);
+
+      filtered = sheetData.months.filter(x => {
+        const y = parseInt(x.month.substring(0, 4));
+        const m = parseInt(x.month.substring(5, 7));
+        const q = Math.floor((m - 1) / 3);
+
+        return y === year && q === quarter;
+      });
+    }
+
+  } else if (period === 'year') {
+
+    const latest = sheetData.months[
+      sheetData.months.length - 1
+    ];
+
+    if (latest) {
+      const year = latest.month.substring(0, 4);
+
+      filtered = sheetData.months.filter(
+        x => x.month.startsWith(year)
+      );
+    }
+  }
+
+  return {
+    km: filtered.reduce((sum, x) => sum + x.km, 0),
+    runs: filtered.reduce((sum, x) => sum + x.runs, 0)
+  };
+}
+
+
+/* ---------- отрисовка ---------- */
+
+function render() {
+
+  const periodData = getPeriodData();
+
+  document.getElementById('total').textContent =
+    periodData.km.toFixed(2);
+
+  document.getElementById('runs').textContent =
+    periodData.runs;
+
+  /*
+    Количество участников и рейтинг сейчас берём
+    из общего рейтинга листа "Сайт".
+  */
+
+  document.getElementById('people').textContent =
+    sheetData.people;
+
+  document.getElementById('avg').textContent =
+    sheetData.avg.toFixed(2);
+
+
+  /* ---------- рейтинг ---------- */
+
+  const ranking = sheetData.ranking;
+
+  const max =
+    Math.max(...ranking.map(x => x.km), 1);
+
+  document.getElementById('ranking').innerHTML =
+    ranking.map((x, i) => {
+
+      let place;
+
+      if (i === 0) {
+        place = '🥇';
+      } else if (i === 1) {
+        place = '🥈';
+      } else if (i === 2) {
+        place = '🥉';
+      } else {
+        place = i + 1;
+      }
+
+      return `
+        <div class="rank">
+
+          <div class="place">
+            ${place}
+          </div>
+
+          <div class="name">
+            ${x.name}
+
+            <div class="bar">
+              <i style="width:${(x.km / max) * 100}%"></i>
+            </div>
+          </div>
+
+          <div class="km">
+            ${x.km.toFixed(2)} км
+          </div>
+
+        </div>
+      `;
+    }).join('') ||
+    '<div class="note">Пока нет данных</div>';
+
+
+  /* ---------- месяцы ---------- */
+
+  const monthly = sheetData.months;
+
+  const maxMonth =
+    Math.max(...monthly.map(x => x.km), 1);
+
+  document.getElementById('months').innerHTML =
+    monthly.map(x => {
+
+      const year =
+        x.month.substring(0, 4);
+
+      const monthNumber =
+        parseInt(x.month.substring(5, 7));
+
+      const monthName =
+        monthsNames[monthNumber - 1];
+
+      return `
+        <div class="month">
+
+          <b>
+            ${monthName} ${year}
+          </b>
+
+          <div class="monthbar">
+            <i style="width:${(x.km / maxMonth) * 100}%"></i>
+          </div>
+
+          <b>
+            ${x.km.toFixed(2)} км
+          </b>
+
+        </div>
+      `;
+
+    }).join('') ||
+    '<div class="note">Пока нет данных</div>';
+}
+
+
+/* ---------- кнопки периода ---------- */
+
+function setPeriod(p, btn) {
+
+  period = p;
+
+  document
+    .querySelectorAll('button')
+    .forEach(b => b.classList.remove('active'));
+
+  btn.classList.add('active');
+
+  render();
+}
+
+
+/* ---------- запуск ---------- */
+
+loadData();
 </script>
 </body>
 </html>
