@@ -24,7 +24,7 @@ body{
   padding:24px 18px 60px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 header{
   background:#202020;
@@ -44,7 +44,7 @@ h1{
   opacity:.7;
 }
 
-/* NAV */
+/* ================= NAV ================= */
 
 .nav{
   display:flex;
@@ -67,7 +67,7 @@ h1{
   color:white;
 }
 
-/* PAGES */
+/* ================= PAGES ================= */
 
 .page{
   display:none;
@@ -77,7 +77,7 @@ h1{
   display:block;
 }
 
-/* CARDS */
+/* ================= CARDS ================= */
 
 .cards{
   display:grid;
@@ -107,7 +107,7 @@ h1{
   color:#777;
 }
 
-/* SECTIONS */
+/* ================= SECTIONS ================= */
 
 .grid{
   display:grid;
@@ -128,10 +128,10 @@ h2{
 }
 
 h3{
-  margin:0 0 14px;
+  margin:0;
 }
 
-/* PERIOD */
+/* ================= PERIOD ================= */
 
 .period-title{
   display:flex;
@@ -146,7 +146,7 @@ h3{
   font-size:14px;
 }
 
-/* RANKING */
+/* ================= RANKING ================= */
 
 .rank{
   display:flex;
@@ -191,7 +191,7 @@ h3{
   border-radius:99px;
 }
 
-/* MONTHS */
+/* ================= MONTHS ================= */
 
 .month{
   display:grid;
@@ -214,7 +214,7 @@ h3{
   background:#555;
 }
 
-/* LEADER */
+/* ================= LEADER ================= */
 
 .leader{
   background:#f4f1eb;
@@ -229,7 +229,7 @@ h3{
   margin-bottom:4px;
 }
 
-/* NOMINATIONS */
+/* ================= NOMINATIONS ================= */
 
 .nominations{
   display:grid;
@@ -264,7 +264,7 @@ h3{
   color:#666;
 }
 
-/* MONTH BUTTONS */
+/* ================= MONTH BUTTONS ================= */
 
 .month-buttons{
   display:flex;
@@ -287,7 +287,104 @@ h3{
   color:white;
 }
 
-/* NOTE */
+/* ================= MONTH STATISTICS ================= */
+
+.month-stat{
+  background:#f4f1eb;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+}
+
+.month-stat:last-child{
+  margin-bottom:0;
+}
+
+.month-stat-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.month-stat-title{
+  font-size:22px;
+  font-weight:800;
+}
+
+.month-stat-total{
+  color:#666;
+  font-size:14px;
+  margin-top:5px;
+}
+
+.month-stat-total strong{
+  color:#222;
+  font-size:16px;
+}
+
+/* ================= PARTICIPANT ROW ================= */
+
+.participant-list{
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.participant-row{
+  display:grid;
+  grid-template-columns:1fr 130px 110px;
+  gap:15px;
+  align-items:center;
+  padding:13px 16px;
+  border-bottom:1px solid #eee;
+}
+
+.participant-row:last-child{
+  border-bottom:0;
+}
+
+.participant-name{
+  font-weight:700;
+}
+
+.participant-runs{
+  color:#666;
+  text-align:center;
+}
+
+.participant-km{
+  font-weight:800;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.participant-header{
+  background:#fafafa;
+  color:#777;
+  font-size:12px;
+  font-weight:600;
+}
+
+.participant-header .participant-name{
+  font-weight:600;
+}
+
+.month-total{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+  gap:18px;
+  font-size:14px;
+  color:#666;
+}
+
+.month-total strong{
+  color:#222;
+}
+
+/* ================= NOTE ================= */
 
 .note{
   color:#777;
@@ -300,7 +397,7 @@ h3{
   padding:15px 0;
 }
 
-/* MOBILE */
+/* ================= MOBILE ================= */
 
 @media(max-width:800px){
 
@@ -359,6 +456,39 @@ h3{
     font-size:14px;
   }
 
+  .month-stat{
+    padding:15px;
+  }
+
+  .month-stat-header{
+    flex-direction:column;
+    gap:5px;
+  }
+
+  .participant-row{
+    grid-template-columns:1fr 75px 70px;
+    gap:7px;
+    padding:12px 10px;
+    font-size:14px;
+  }
+
+  .participant-header{
+    font-size:11px;
+  }
+
+  .participant-km{
+    font-size:13px;
+  }
+
+  .participant-runs{
+    font-size:13px;
+  }
+
+  .month-total{
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
 }
 </style>
 </head>
@@ -411,10 +541,6 @@ h3{
         <h2 id="currentTitle">
           Текущий месяц
         </h2>
-
-        <span>
-          Статистика за текущий календарный месяц
-        </span>
       </div>
 
     </div>
@@ -525,6 +651,21 @@ h3{
 
   </div>
 
+
+  <section style="margin-top:16px">
+
+    <div class="period-title">
+
+      <h2>
+        📈 Прогресс месяца
+      </h2>
+
+    </div>
+
+    <div id="comparison"></div>
+
+  </section>
+
 </div>
 
 
@@ -596,8 +737,8 @@ h3{
       🏅 Номинации
     </h2>
 
-
     <div class="nominations">
+
 
       <div class="nomination">
 
@@ -723,6 +864,7 @@ h3{
 
       </div>
 
+
     </div>
 
   </section>
@@ -730,10 +872,13 @@ h3{
 </div>
 
 
+</div>
+
+
 <script>
 
 /* =========================================================
-   НАСТРОЙКИ
+   GOOGLE SHEETS
 ========================================================= */
 
 const SHEET_URL =
@@ -926,12 +1071,7 @@ function monthLabel(key){
   ];
 
 
-  if(!key) return '';
-
-
-  const year =
-    key.substring(0,4);
-
+  const year = key.substring(0,4);
 
   const month =
     parseInt(key.substring(5,7));
@@ -943,29 +1083,7 @@ function monthLabel(key){
 
 
 /* =========================================================
-   ТЕКУЩИЙ КАЛЕНДАРНЫЙ МЕСЯЦ
-========================================================= */
-
-function getCurrentMonth(){
-
-  const now = new Date();
-
-  const year =
-    now.getFullYear();
-
-  const month =
-    String(
-      now.getMonth()+1
-    ).padStart(2,'0');
-
-
-  return `${year}-${month}`;
-
-}
-
-
-/* =========================================================
-   ЗАГРУЗКА
+   ЗАГРУЗКА ДАННЫХ
 ========================================================= */
 
 async function loadData(){
@@ -999,7 +1117,7 @@ async function loadData(){
 
 
     /*
-      ПЕРВОЙ РЯД — ЗАГОЛОВКИ
+      ПРОБЕЖКИ
 
       A — Дата
       B — Участник
@@ -1065,8 +1183,9 @@ async function loadData(){
 
 
       /*
-        УЧИТЫВАЕМ ТОЛЬКО
-        СТАТУС "Учитывать"
+        Учитываем только пробежки,
+        которым поставлен статус
+        "Учитывать".
       */
 
       if(status !== 'Учитывать'){
@@ -1137,61 +1256,40 @@ async function loadData(){
 
 
 /* =========================================================
-   ОПРЕДЕЛЯЕМ ТЕКУЩИЙ МЕСЯЦ
+   МЕСЯЦЫ
 ========================================================= */
 
 function determineMonths(){
 
-  /*
-    ВАЖНО:
-
-    Теперь текущий месяц определяется
-    по сегодняшней дате.
-
-    Мы НЕ ищем последний месяц,
-    в котором были пробежки.
-  */
-
-  currentMonth =
-    getCurrentMonth();
-
-
-  /*
-    Для страницы рейтингов выбираем
-    текущий месяц, если в нём есть
-    данные.
-
-    Если пока нет — берём последний
-    месяц, в котором были пробежки.
-  */
-
   const months =
     [...new Set(
       runs.map(x => x.month)
-    )].sort().reverse();
+    )].sort();
 
 
-  if(months.includes(currentMonth)){
+  if(!months.length){
 
-    selectedRatingMonth =
-      currentMonth;
+    currentMonth = null;
 
-  }
+    selectedRatingMonth = null;
 
-  else{
-
-    selectedRatingMonth =
-      months.length
-        ? months[0]
-        : currentMonth;
+    return;
 
   }
+
+
+  currentMonth =
+    months[months.length-1];
+
+
+  selectedRatingMonth =
+    currentMonth;
 
 }
 
 
 /* =========================================================
-   ДАННЫЕ МЕСЯЦА
+   ПРОБЕЖКИ МЕСЯЦА
 ========================================================= */
 
 function monthRuns(month){
@@ -1290,7 +1388,7 @@ function allTimeRanking(){
 
 
 /* =========================================================
-   ОТРИСОВКА РЕЙТИНГА
+   РЕНДЕР РЕЙТИНГА
 ========================================================= */
 
 function renderRanking(
@@ -1305,7 +1403,7 @@ function renderRanking(
   if(!arr.length){
 
     element.innerHTML =
-      '<div class="empty">Пока нет учитываемых пробежек</div>';
+      '<div class="empty">Пока нет пробежек</div>';
 
     return;
 
@@ -1401,17 +1499,35 @@ function getLeader(arr){
 
 function renderHome(){
 
-  /*
-    ВСЕГДА показываем текущий
-    календарный месяц.
+  if(!currentMonth){
 
-    Даже если в нём пока 0 пробежек.
-  */
+    document.getElementById(
+      'currentTitle'
+    ).textContent =
+      'Пока нет пробежек';
 
-  document.getElementById(
-    'currentTitle'
-  ).textContent =
-    monthLabel(currentMonth);
+
+    document.getElementById(
+      'currentRanking'
+    ).innerHTML =
+      '<div class="empty">Пока нет учитываемых пробежек</div>';
+
+
+    document.getElementById(
+      'leaders'
+    ).innerHTML =
+      '<div class="empty">Пока нет лидеров</div>';
+
+
+    document.getElementById(
+      'comparison'
+    ).innerHTML =
+      '<div class="empty">Пока нет данных</div>';
+
+
+    return;
+
+  }
 
 
   const current =
@@ -1420,6 +1536,12 @@ function renderHome(){
 
   const currentStats =
     statistics(current);
+
+
+  document.getElementById(
+    'currentTitle'
+  ).textContent =
+    monthLabel(currentMonth);
 
 
   document.getElementById(
@@ -1497,9 +1619,46 @@ function renderHome(){
     document.getElementById(
       'leaders'
     ).innerHTML =
-      '<div class="empty">В этом месяце пока нет пробежек</div>';
+      '<div class="empty">Пока нет лидеров</div>';
 
   }
+
+
+  /*
+    ПРОГРЕСС ТЕКУЩЕГО МЕСЯЦА
+
+    Здесь больше не показываем
+    предыдущий месяц.
+  */
+
+  document.getElementById(
+    'comparison'
+  ).innerHTML = `
+
+    <div class="month">
+
+      <b>
+        ${monthLabel(currentMonth)}
+      </b>
+
+      <div class="monthbar">
+
+        <i style="width:100%"></i>
+
+      </div>
+
+      <b>
+        ${currentStats.km.toFixed(1)} км
+      </b>
+
+    </div>
+
+    <div class="note">
+      ${currentStats.runs} пробежек ·
+      ${currentStats.people} участников
+    </div>
+
+  `;
 
 }
 
@@ -1594,7 +1753,7 @@ function selectRatingMonth(month){
 
 
 /* =========================================================
-   СТАТИСТИКА
+   НОВАЯ СТАТИСТИКА ПО МЕСЯЦАМ
 ========================================================= */
 
 function renderStats(){
@@ -1621,89 +1780,161 @@ function renderStats(){
   }
 
 
-  const values =
-    months.map(
-      m => statistics(monthRuns(m)).km
-    );
-
-
-  const max =
-    Math.max(...values,1);
-
+  /*
+    Для каждой даты строим отдельный
+    полный список участников.
+  */
 
   container.innerHTML =
     months.map(month => {
 
+      const monthData =
+        monthRuns(month);
+
+
       const stats =
-        statistics(
-          monthRuns(month)
-        );
+        statistics(monthData);
 
 
-      const leader =
-        getLeader(
-          monthRuns(month)
-        );
+      /*
+        Группируем пробежки по участникам.
+      */
+
+      const participants = {};
+
+
+      monthData.forEach(run => {
+
+        if(!participants[run.name]){
+
+          participants[run.name] = {
+
+            name:run.name,
+
+            runs:0,
+
+            km:0
+
+          };
+
+        }
+
+
+        participants[run.name].runs++;
+
+        participants[run.name].km += run.km;
+
+      });
+
+
+      /*
+        Сортируем участников
+        по километражу.
+      */
+
+      const list =
+        Object.values(participants)
+          .sort(
+            (a,b) => b.km - a.km
+          );
+
+
+      /*
+        Формируем строки таблицы.
+      */
+
+      const rowsHTML =
+        list.map(person => `
+
+          <div class="participant-row">
+
+            <div class="participant-name">
+              ${escapeHTML(person.name)}
+            </div>
+
+            <div class="participant-runs">
+              ${person.runs}
+            </div>
+
+            <div class="participant-km">
+              ${person.km.toFixed(1)} км
+            </div>
+
+          </div>
+
+        `).join('');
 
 
       return `
 
-        <div class="leader">
+        <div class="month-stat">
 
-          <div class="period-title">
+          <div class="month-stat-header">
 
-            <h3>
-              ${monthLabel(month)}
-            </h3>
+            <div>
 
-            <span>
-              ${stats.runs} пробежек
-            </span>
+              <div class="month-stat-title">
+                ${monthLabel(month)}
+              </div>
 
-          </div>
+              <div class="month-stat-total">
 
+                Общий результат месяца:
+                <strong>
+                  ${stats.km.toFixed(1)} км
+                </strong>
 
-          <div class="month">
-
-            <b>
-              ${stats.km.toFixed(1)} км
-            </b>
-
-            <div class="monthbar">
-
-              <i
-                style="
-                  width:${
-                    stats.km / max * 100
-                  }%
-                "
-              ></i>
+              </div>
 
             </div>
 
-            <b>
-              ${stats.people} чел.
-            </b>
+            <div class="month-stat-total">
+
+              ${stats.people} участников ·
+              ${stats.runs} пробежек
+
+            </div>
 
           </div>
 
 
-          ${
-            leader
-              ? `
-                <div class="note">
+          <div class="participant-list">
 
-                  🥇 Лидер:
-                  <strong>
-                    ${escapeHTML(leader.name)}
-                  </strong>
+            <div class="participant-row participant-header">
 
-                  — ${leader.km.toFixed(1)} км
+              <div class="participant-name">
+                Участник
+              </div>
 
-                </div>
-              `
-              : ''
-          }
+              <div class="participant-runs">
+                Пробежки
+              </div>
+
+              <div class="participant-km">
+                Километры
+              </div>
+
+            </div>
+
+
+            ${rowsHTML}
+
+          </div>
+
+
+          <div class="month-total">
+
+            <span>
+              Всего пробежек:
+              <strong>${stats.runs}</strong>
+            </span>
+
+            <span>
+              Всего км:
+              <strong>${stats.km.toFixed(1)}</strong>
+            </span>
+
+          </div>
 
         </div>
 
@@ -1841,9 +2072,7 @@ function renderNominations(){
 
   const active =
     Object.entries(activity)
-      .sort(
-        (a,b) => b[1]-a[1]
-      )[0];
+      .sort((a,b) => b[1]-a[1])[0];
 
 
   if(active){
@@ -2066,7 +2295,7 @@ loadData();
 
 
 /*
-  Автообновление каждые 5 минут.
+  Обновляем данные каждые 5 минут.
 */
 
 setInterval(
