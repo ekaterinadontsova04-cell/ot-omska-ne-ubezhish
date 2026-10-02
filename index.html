@@ -369,10 +369,12 @@ h3{
 
 <header>
   <h1>#От_Омска_не_убежишь</h1>
+
   <div class="sub">
     Статистика клуба · километры · рейтинги · достижения
   </div>
 </header>
+
 
 <nav class="nav">
 
@@ -406,17 +408,22 @@ h3{
     <div class="period-title">
 
       <div>
-        <h2 id="currentTitle">Текущий месяц</h2>
-        <span id="previousTitle">
-          Предыдущий месяц
+        <h2 id="currentTitle">
+          Текущий месяц
+        </h2>
+
+        <span>
+          Статистика за текущий календарный месяц
         </span>
       </div>
 
     </div>
 
+
     <div class="cards">
 
       <div class="card">
+
         <div class="label">
           Километраж
         </div>
@@ -428,10 +435,12 @@ h3{
         <div class="unit">
           км
         </div>
+
       </div>
 
 
       <div class="card">
+
         <div class="label">
           Участников
         </div>
@@ -443,10 +452,12 @@ h3{
         <div class="unit">
           бегунов
         </div>
+
       </div>
 
 
       <div class="card">
+
         <div class="label">
           Тренировок
         </div>
@@ -458,10 +469,12 @@ h3{
         <div class="unit">
           пробежек
         </div>
+
       </div>
 
 
       <div class="card">
+
         <div class="label">
           Среднее
         </div>
@@ -473,6 +486,7 @@ h3{
         <div class="unit">
           км / участника
         </div>
+
       </div>
 
     </div>
@@ -485,8 +499,13 @@ h3{
     <section>
 
       <div class="period-title">
-        <h2>🏆 Рейтинг текущего месяца</h2>
+
+        <h2>
+          🏆 Рейтинг текущего месяца
+        </h2>
+
         <span id="currentRankMonth"></span>
+
       </div>
 
       <div id="currentRanking"></div>
@@ -496,41 +515,15 @@ h3{
 
     <section>
 
-      <h2>👑 Лидеры месяцев</h2>
+      <h2>
+        👑 Лидер текущего месяца
+      </h2>
 
       <div id="leaders"></div>
 
     </section>
 
   </div>
-
-
-  <section style="margin-top:16px">
-
-    <div class="period-title">
-
-      <h2>📊 Текущий и прошлый месяц</h2>
-
-    </div>
-
-    <div id="comparison"></div>
-
-  </section>
-
-
-  <section style="margin-top:16px">
-
-    <div class="period-title">
-
-      <h2>🥈 Рейтинг прошлого месяца</h2>
-
-      <span id="previousRankMonth"></span>
-
-    </div>
-
-    <div id="previousRanking"></div>
-
-  </section>
 
 </div>
 
@@ -543,10 +536,13 @@ h3{
 
   <section>
 
-    <h2>🏆 Рейтинги по месяцам</h2>
+    <h2>
+      🏆 Рейтинги по месяцам
+    </h2>
 
-    <div id="ratingMonthButtons"
-         class="month-buttons">
+    <div
+      id="ratingMonthButtons"
+      class="month-buttons">
     </div>
 
     <div id="selectedMonthTitle"></div>
@@ -558,7 +554,9 @@ h3{
 
   <section style="margin-top:16px">
 
-    <h2>🏆 Общий рейтинг клуба</h2>
+    <h2>
+      🏆 Общий рейтинг клуба
+    </h2>
 
     <div id="allRanking"></div>
 
@@ -575,7 +573,9 @@ h3{
 
   <section>
 
-    <h2>📊 Статистика по месяцам</h2>
+    <h2>
+      📊 Статистика по месяцам
+    </h2>
 
     <div id="months"></div>
 
@@ -592,7 +592,10 @@ h3{
 
   <section>
 
-    <h2>🏅 Номинации</h2>
+    <h2>
+      🏅 Номинации
+    </h2>
+
 
     <div class="nominations">
 
@@ -726,22 +729,12 @@ h3{
 
 </div>
 
-</div>
-
 
 <script>
 
 /* =========================================================
    НАСТРОЙКИ
 ========================================================= */
-
-/*
-  Публикация Google Таблицы.
-
-  ВАЖНО:
-  Здесь используется тот же опубликованный документ,
-  который уже подключен к нашему сайту.
-*/
 
 const SHEET_URL =
 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQan5aWH0h1auf7wBZbeTlRkgK3WreXEg24CjR0o-zo5aGvLGyFtTNK11pTCFJBNN0H_aC2thKuHjA4/pub?gid=0&single=true&output=csv';
@@ -754,8 +747,6 @@ const SHEET_URL =
 let runs = [];
 
 let currentMonth = null;
-
-let previousMonth = null;
 
 let selectedRatingMonth = null;
 
@@ -842,6 +833,7 @@ function parseCSV(text){
 
 
   return rows;
+
 }
 
 
@@ -853,13 +845,8 @@ function normalizeDate(value){
 
   if(!value) return null;
 
-
   value = value.trim();
 
-
-  /*
-    Если дата пришла как 02.10.2026
-  */
 
   if(/^\d{2}\.\d{2}\.\d{4}$/.test(value)){
 
@@ -870,20 +857,12 @@ function normalizeDate(value){
   }
 
 
-  /*
-    Если дата уже 2026-10-02
-  */
-
   if(/^\d{4}-\d{2}-\d{2}$/.test(value)){
 
     return value;
 
   }
 
-
-  /*
-    Попытка стандартного разбора
-  */
 
   const d = new Date(value);
 
@@ -947,13 +926,40 @@ function monthLabel(key){
   ];
 
 
-  const year = key.substring(0,4);
+  if(!key) return '';
+
+
+  const year =
+    key.substring(0,4);
+
 
   const month =
     parseInt(key.substring(5,7));
 
 
   return names[month-1] + ' ' + year;
+
+}
+
+
+/* =========================================================
+   ТЕКУЩИЙ КАЛЕНДАРНЫЙ МЕСЯЦ
+========================================================= */
+
+function getCurrentMonth(){
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth()+1
+    ).padStart(2,'0');
+
+
+  return `${year}-${month}`;
 
 }
 
@@ -973,9 +979,11 @@ async function loadData(){
 
 
     if(!response.ok){
+
       throw new Error(
         'Не удалось загрузить таблицу'
       );
+
     }
 
 
@@ -987,8 +995,11 @@ async function loadData(){
       parseCSV(csv);
 
 
+    runs = [];
+
+
     /*
-      Структура "Пробежки":
+      ПЕРВОЙ РЯД — ЗАГОЛОВКИ
 
       A — Дата
       B — Участник
@@ -1004,14 +1015,6 @@ async function loadData(){
     */
 
 
-    runs = [];
-
-
-    /*
-      Первая строка — заголовки.
-      Поэтому начинаем с i = 1.
-    */
-
     for(let i=1;i<rows.length;i++){
 
       const row = rows[i];
@@ -1020,42 +1023,50 @@ async function loadData(){
       const date =
         normalizeDate(row[0]);
 
+
       const name =
         String(row[1] || '').trim();
+
 
       const km =
         number(row[2]);
 
+
       const time =
         String(row[3] || '').trim();
+
 
       const pace =
         String(row[4] || '').trim();
 
+
       const type =
         String(row[5] || '').trim();
+
 
       const comment =
         String(row[6] || '').trim();
 
+
       const hours =
         number(row[7]);
+
 
       const minutes =
         number(row[8]);
 
+
       const seconds =
         number(row[9]);
+
 
       const status =
         String(row[10] || '').trim();
 
 
       /*
-        ГЛАВНОЕ УСЛОВИЕ
-
-        Учитываем только:
-        K = Учитывать
+        УЧИТЫВАЕМ ТОЛЬКО
+        СТАТУС "Учитывать"
       */
 
       if(status !== 'Учитывать'){
@@ -1099,10 +1110,6 @@ async function loadData(){
     }
 
 
-    /*
-      Сортируем от старых к новым.
-    */
-
     runs.sort(
       (a,b) =>
         a.date.localeCompare(b.date)
@@ -1118,6 +1125,7 @@ async function loadData(){
 
     console.error(error);
 
+
     document.getElementById(
       'currentRanking'
     ).innerHTML =
@@ -1129,40 +1137,55 @@ async function loadData(){
 
 
 /* =========================================================
-   ОПРЕДЕЛЯЕМ МЕСЯЦЫ
+   ОПРЕДЕЛЯЕМ ТЕКУЩИЙ МЕСЯЦ
 ========================================================= */
 
 function determineMonths(){
 
+  /*
+    ВАЖНО:
+
+    Теперь текущий месяц определяется
+    по сегодняшней дате.
+
+    Мы НЕ ищем последний месяц,
+    в котором были пробежки.
+  */
+
+  currentMonth =
+    getCurrentMonth();
+
+
+  /*
+    Для страницы рейтингов выбираем
+    текущий месяц, если в нём есть
+    данные.
+
+    Если пока нет — берём последний
+    месяц, в котором были пробежки.
+  */
+
   const months =
     [...new Set(
       runs.map(x => x.month)
-    )].sort();
+    )].sort().reverse();
 
 
-  if(months.length === 0){
+  if(months.includes(currentMonth)){
 
-    currentMonth = null;
-
-    previousMonth = null;
-
-    return;
+    selectedRatingMonth =
+      currentMonth;
 
   }
 
+  else{
 
-  currentMonth =
-    months[months.length-1];
+    selectedRatingMonth =
+      months.length
+        ? months[0]
+        : currentMonth;
 
-
-  previousMonth =
-    months.length >= 2
-      ? months[months.length-2]
-      : null;
-
-
-  selectedRatingMonth =
-    currentMonth;
+  }
 
 }
 
@@ -1282,7 +1305,7 @@ function renderRanking(
   if(!arr.length){
 
     element.innerHTML =
-      '<div class="empty">Пока нет пробежек</div>';
+      '<div class="empty">Пока нет учитываемых пробежек</div>';
 
     return;
 
@@ -1300,6 +1323,7 @@ function renderRanking(
     arr.map((x,i) => {
 
       let place;
+
 
       if(i === 0){
         place = '🥇';
@@ -1377,38 +1401,12 @@ function getLeader(arr){
 
 function renderHome(){
 
-  if(!currentMonth){
+  /*
+    ВСЕГДА показываем текущий
+    календарный месяц.
 
-    document.getElementById(
-      'currentTitle'
-    ).textContent =
-      'Пока нет пробежек';
-
-    document.getElementById(
-      'currentRanking'
-    ).innerHTML =
-      '<div class="empty">Пока нет учитываемых пробежек</div>';
-
-    return;
-
-  }
-
-
-  const current =
-    monthRuns(currentMonth);
-
-
-  const previous =
-    monthRuns(previousMonth);
-
-
-  const currentStats =
-    statistics(current);
-
-
-  const previousStats =
-    statistics(previous);
-
+    Даже если в нём пока 0 пробежек.
+  */
 
   document.getElementById(
     'currentTitle'
@@ -1416,12 +1414,12 @@ function renderHome(){
     monthLabel(currentMonth);
 
 
-  document.getElementById(
-    'previousTitle'
-  ).textContent =
-    previousMonth
-      ? 'Предыдущий: ' + monthLabel(previousMonth)
-      : 'Предыдущего месяца пока нет';
+  const current =
+    monthRuns(currentMonth);
+
+
+  const currentStats =
+    statistics(current);
 
 
   document.getElementById(
@@ -1460,167 +1458,33 @@ function renderHome(){
   );
 
 
-  document.getElementById(
-    'previousRankMonth'
-  ).textContent =
-    previousMonth
-      ? monthLabel(previousMonth)
-      : '';
-
-
-  renderRanking(
-    'previousRanking',
-    ranking(previous)
-  );
-
-
   /*
-    ЛИДЕРЫ
+    ЛИДЕР ТЕКУЩЕГО МЕСЯЦА
   */
 
-  let leadersHTML = '';
+  const leader =
+    getLeader(current);
 
 
-  if(currentMonth){
+  if(leader){
 
-    const leader =
-      getLeader(current);
+    document.getElementById(
+      'leaders'
+    ).innerHTML = `
 
+      <div class="leader">
 
-    if(leader){
-
-      leadersHTML += `
-
-        <div class="leader">
-
-          <div class="label">
-            ${monthLabel(currentMonth)}
-          </div>
-
-          <div class="leader-name">
-            🥇 ${escapeHTML(leader.name)}
-          </div>
-
-          <div>
-            ${leader.km.toFixed(1)} км
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-  }
-
-
-  if(previousMonth){
-
-    const leader =
-      getLeader(previous);
-
-
-    if(leader){
-
-      leadersHTML += `
-
-        <div class="leader">
-
-          <div class="label">
-            ${monthLabel(previousMonth)}
-          </div>
-
-          <div class="leader-name">
-            🥇 ${escapeHTML(leader.name)}
-          </div>
-
-          <div>
-            ${leader.km.toFixed(1)} км
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-  }
-
-
-  document.getElementById(
-    'leaders'
-  ).innerHTML =
-    leadersHTML ||
-    '<div class="empty">Пока нет лидеров</div>';
-
-
-  /*
-    СРАВНЕНИЕ
-  */
-
-  let comparisonHTML = '';
-
-
-  if(previousMonth){
-
-    comparisonHTML = `
-
-      <div class="month">
-
-        <b>
-          ${monthLabel(previousMonth)}
-        </b>
-
-        <div class="monthbar">
-
-          <i
-            style="
-              width:${
-                previousStats.km /
-                Math.max(
-                  currentStats.km,
-                  previousStats.km,
-                  1
-                ) * 100
-              }%
-            "
-          ></i>
-
-        </div>
-
-        <b>
-          ${previousStats.km.toFixed(1)} км
-        </b>
-
-      </div>
-
-
-      <div class="month">
-
-        <b>
+        <div class="label">
           ${monthLabel(currentMonth)}
-        </b>
-
-        <div class="monthbar">
-
-          <i
-            style="
-              width:${
-                currentStats.km /
-                Math.max(
-                  currentStats.km,
-                  previousStats.km,
-                  1
-                ) * 100
-              }%
-            "
-          ></i>
-
         </div>
 
-        <b>
-          ${currentStats.km.toFixed(1)} км
-        </b>
+        <div class="leader-name">
+          🥇 ${escapeHTML(leader.name)}
+        </div>
+
+        <div>
+          ${leader.km.toFixed(1)} км
+        </div>
 
       </div>
 
@@ -1630,16 +1494,12 @@ function renderHome(){
 
   else{
 
-    comparisonHTML =
-      '<div class="empty">Для сравнения нужен ещё один месяц</div>';
+    document.getElementById(
+      'leaders'
+    ).innerHTML =
+      '<div class="empty">В этом месяце пока нет пробежек</div>';
 
   }
-
-
-  document.getElementById(
-    'comparison'
-  ).innerHTML =
-    comparisonHTML;
 
 }
 
@@ -1832,11 +1692,14 @@ function renderStats(){
             leader
               ? `
                 <div class="note">
+
                   🥇 Лидер:
                   <strong>
                     ${escapeHTML(leader.name)}
                   </strong>
+
                   — ${leader.km.toFixed(1)} км
+
                 </div>
               `
               : ''
@@ -1858,19 +1721,12 @@ function renderStats(){
 function renderNominations(){
 
   if(!runs.length){
-
     return;
-
   }
 
 
   /*
     САМЫЙ БЫСТРЫЙ
-
-    Только дистанции >= 3 км.
-
-    Для надёжности считаем темп
-    непосредственно из времени и дистанции.
   */
 
   const eligible =
@@ -1887,11 +1743,6 @@ function renderNominations(){
     let totalSeconds = 0;
 
 
-    /*
-      Если часы/минуты/секунды
-      заполнены — используем их.
-    */
-
     if(
       x.hours ||
       x.minutes ||
@@ -1905,11 +1756,6 @@ function renderNominations(){
 
     }
 
-
-    /*
-      Если времени нет, пробуем
-      разобрать столбец D.
-    */
 
     if(!totalSeconds && x.time){
 
@@ -1995,7 +1841,9 @@ function renderNominations(){
 
   const active =
     Object.entries(activity)
-      .sort((a,b) => b[1]-a[1])[0];
+      .sort(
+        (a,b) => b[1]-a[1]
+      )[0];
 
 
   if(active){
@@ -2067,8 +1915,6 @@ function renderNominations(){
 
   /*
     САМАЯ РЕГУЛЯРНАЯ
-
-    Считаем разные дни.
   */
 
   const days = {};
@@ -2145,7 +1991,7 @@ function formatPace(seconds){
 
 
 /* =========================================================
-   БЕЗОПАСНЫЙ ВЫВОД ИМЕНИ
+   БЕЗОПАСНЫЙ ВЫВОД
 ========================================================= */
 
 function escapeHTML(value){
