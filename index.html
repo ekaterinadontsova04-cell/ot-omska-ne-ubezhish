@@ -1917,75 +1917,131 @@ function number(value) {
 
 function normalizeDate(value) {
 
-  if (!value) {
+ if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+    return null;
+  }
+
+  const text = String(value).trim();
+
+  /*
+     Google Sheets может отдавать дату
+     в разных форматах.
+
+     Сначала обрабатываем российский формат
+     ДД.ММ.ГГГГ / ДД-ММ-ГГГГ / ДД/ММ/ГГГГ
+  */
+
+  const ruMatch = text.match(
+    /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/
+  );
+
+  if (ruMatch) {
+
+    const day = Number(ruMatch[1]);
+    const month = Number(ruMatch[2]);
+    const year = Number(ruMatch[3]);
+
+    const date = new Date(
+      year,
+      month - 1,
+      day
+    );
+
+    /*
+       Проверяем, что дата действительно существует.
+       Например, 31.02.2026 не принимаем.
+    */
+
+    if (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    ) {
+      return date;
+    }
+
     return null;
   }
 
 
-  const text =
-    String(value).trim();
-
-
   /*
-     Сначала пробуем стандартный формат
+     Формат YYYY-MM-DD
   */
 
-  let date =
-    new Date(text);
+  const isoMatch = text.match(
+    /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+  );
 
+  if (isoMatch) {
 
-  if (!isNaN(date)) {
-    return date;
+    const year = Number(isoMatch[1]);
+    const month = Number(isoMatch[2]);
+    const day = Number(isoMatch[3]);
+
+    const date = new Date(
+      year,
+      month - 1,
+      day
+    );
+
+    if (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    ) {
+      return date;
+    }
+
+    return null;
   }
 
 
   /*
-     Российский формат:
-     ДД.ММ.ГГГГ
+     Если Google Sheets отдаёт американский формат
+     MM/DD/YYYY, обрабатываем его отдельно.
   */
 
-  const parts =
-    text.split(/[./-]/);
+  const usMatch = text.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+  );
 
+  if (usMatch) {
 
-  if (parts.length === 3) {
+    const month = Number(usMatch[1]);
+    const day = Number(usMatch[2]);
+    const year = Number(usMatch[3]);
 
-    let day =
-      parseInt(
-        parts[0],
-        10
-      );
+    const date = new Date(
+      year,
+      month - 1,
+      day
+    );
 
-    let month =
-      parseInt(
-        parts[1],
-        10
-      ) - 1;
-
-    let year =
-      parseInt(
-        parts[2],
-        10
-      );
-
-
-    if (year < 100) {
-      year += 2000;
-    }
-
-
-    date =
-      new Date(
-        year,
-        month,
-        day
-      );
-
-
-    if (!isNaN(date)) {
+    if (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    ) {
       return date;
     }
 
+    return null;
+  }
+
+
+  /*
+     Последняя попытка — стандартный формат JS.
+     Но только если дата действительно валидна.
+  */
+
+  const date = new Date(text);
+
+  if (!isNaN(date.getTime())) {
+    return date;
   }
 
 
@@ -2115,7 +2171,19 @@ function normalizeHeader(value) {
 
 }
 
+/* =========================================================
+   НОРМАЛИЗАЦИЯ ИМЕНИ УЧАСТНИКА
+   ========================================================= */
 
+function normalizeName(value) {
+
+  return String(value || "")
+    .replace(/\u00A0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+}
+   
 /* =========================================================
    ПОИСК КОЛОНКИ
    ========================================================= */
@@ -2330,11 +2398,11 @@ async function loadData() {
 
 
       const name =
-        String(
-          nameIndex >= 0
-            ? row[nameIndex]
-            : row[1] || ""
-        ).trim();
+  normalizeName(
+    nameIndex >= 0
+      ? row[nameIndex]
+      : row[1] || ""
+  );
 
 
       const km =
@@ -2478,12 +2546,10 @@ async function loadData() {
 function determineMonths() {
 
 /*
-   * Формируем список ТОЛЬКО тех месяцев,
-   * в которых есть хотя бы одна учтённая пробежка.
-   *
-   * Пустые календарные месяцы сюда вообще
-   * не попадают.
-   */
+     Месяц существует только тогда,
+     когда в runs есть хотя бы одна
+     реально учтённая пробежка.
+  */
 
   const existingMonths = new Set();
 
@@ -2491,42 +2557,52 @@ function determineMonths() {
 
     if (
       run &&
-      run.month &&
+      run.date instanceof Date &&
+      !isNaN(run.date.getTime()) &&
+      run.name &&
+      Number.isFinite(run.km) &&
       run.km > 0
     ) {
-      existingMonths.add(run.month);
+
+      existingMonths.add(
+        monthKey(run.date)
+      );
+
     }
 
   });
 
 
   /*
-   * Сортируем месяцы от старых к новым.
-   */
+     Сортируем от старых к новым.
+  */
 
-  months = Array.from(existingMonths)
-    .sort((a, b) => {
+  months =
+    Array.from(existingMonths)
+      .sort((a, b) => {
 
-      const [yearA, monthA] =
-        a.split("-").map(Number);
+        const [yearA, monthA] =
+          a.split("-").map(Number);
 
-      const [yearB, monthB] =
-        b.split("-").map(Number);
+        const [yearB, monthB] =
+          b.split("-").map(Number);
 
-      return (
-        new Date(yearA, monthA - 1)
-        -
-        new Date(yearB, monthB - 1)
-      );
+        return (
+          yearA * 12 +
+          monthA
+        ) -
+        (
+          yearB * 12 +
+          monthB
+        );
 
-    });
+      });
 
 
   /*
-   * Текущий месяц —
-   * последний месяц, в котором действительно
-   * была хотя бы одна учтённая пробежка.
-   */
+     Последний месяц, в котором действительно
+     была пробежка.
+  */
 
   currentMonthKey =
     months.length
@@ -2535,25 +2611,19 @@ function determineMonths() {
 
 
   /*
-   * Предыдущий месяц —
-   * не календарный предыдущий месяц,
-   * а предыдущий месяц ИЗ СПИСКА ПРОБЕЖЕК.
-   *
-   * Например:
-   *
-   * август — есть
-   * сентябрь — нет
-   * октябрь — есть
-   *
-   * Тогда:
-   * текущий = октябрь
-   * предыдущий = август
-   */
+     Предыдущий реально существующий месяц.
+  */
 
   previousMonthKey =
     months.length > 1
       ? months[months.length - 2]
       : null;
+
+
+  console.log(
+    "Реальные месяцы статистики:",
+    months
+  );
 
 }
 
