@@ -1,2800 +1,1959 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
 
-<title>#От_Омска_не_убежишь — статистика клуба</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<!-- Иконка сайта -->
-<link rel="icon" type="image/png" href="logo.png">
+  <title>#От_Омска_не_убежишь — статистика клуба</title>
 
-<style>
+  <!-- Иконка вкладки браузера -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="logo.png"
+  >
 
-*{
-  box-sizing:border-box;
-}
+  <style>
 
-html{
-  scroll-behavior:smooth;
-}
+    /* =========================================================
+       1. ОСНОВНЫЕ НАСТРОЙКИ
+       ========================================================= */
 
-body{
-  margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:#f7f5f0;
-  color:#202020;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-button{
-  font-family:inherit;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.wrap{
-  max-width:1180px;
-  margin:auto;
-  padding:18px 18px 60px;
-}
+    body {
+      margin: 0;
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
 
+      background: #f7f5f0;
+      color: #202020;
+    }
 
-/* =========================================================
-   HEADER
-========================================================= */
+    button {
+      font-family: inherit;
+    }
 
-header{
-  position:relative;
-  overflow:hidden;
 
-  background:#202020;
-  color:white;
+    /* =========================================================
+       2. ШАПКА
+       ========================================================= */
 
-  border-radius:28px;
+    header {
+      background: #202020;
+      color: #ffffff;
 
-  padding:26px 30px;
+      padding: 28px 20px 24px;
 
-  margin-bottom:18px;
+      text-align: center;
+    }
 
-  display:flex;
-  align-items:center;
-  gap:22px;
+    .header-logo {
+      width: 110px;
+      height: 110px;
 
-  box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
+      object-fit: contain;
 
-.header-logo{
-  width:82px;
-  height:82px;
+      display: block;
 
-  object-fit:contain;
+      margin: 0 auto 15px;
+    }
 
-  flex-shrink:0;
+    .header-title {
+      margin: 0;
 
-  background:white;
-  border-radius:18px;
-  padding:7px;
-}
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
 
-.header-text{
-  position:relative;
-  z-index:2;
-}
+    .header-subtitle {
+      margin: 8px 0 0;
 
-h1{
-  margin:0 0 8px;
+      font-size: 15px;
+      opacity: 0.75;
+    }
 
-  font-size:clamp(28px,5vw,50px);
 
-  line-height:1.02;
+    /* =========================================================
+       3. НАВИГАЦИЯ
+       ========================================================= */
 
-  letter-spacing:-1px;
-}
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
 
-.sub{
-  color:#ddd;
-  font-size:15px;
-}
+      margin-top: 22px;
+    }
 
+    nav button {
+      border: 1px solid rgba(255,255,255,0.25);
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+      background: transparent;
+      color: #ffffff;
 
-.nav{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+      padding: 9px 16px;
 
-  margin:18px 0;
-}
+      border-radius: 999px;
 
-.nav button{
-  border:0;
+      cursor: pointer;
 
-  border-radius:999px;
+      transition: 0.2s;
+    }
 
-  padding:11px 18px;
+    nav button:hover {
+      background: #ffffff;
+      color: #202020;
+    }
 
-  background:white;
+    nav button.active {
+      background: #ffffff;
+      color: #202020;
+    }
 
-  color:#202020;
 
-  cursor:pointer;
+    /* =========================================================
+       4. ОСНОВНОЙ КОНТЕЙНЕР
+       ========================================================= */
 
-  font-weight:800;
+    main {
+      width: min(1100px, calc(100% - 30px));
 
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
+      margin: 0 auto;
 
-  transition:.2s;
-}
+      padding: 35px 0 60px;
+    }
 
-.nav button:hover{
-  transform:translateY(-1px);
-}
 
-.nav button.active{
-  background:#202020;
-  color:white;
-}
+    /* =========================================================
+       5. СЕКЦИИ
+       ========================================================= */
 
+    .section {
+      display: none;
+    }
 
-/* =========================================================
-   PAGES
-========================================================= */
+    .section.active {
+      display: block;
+    }
 
-.page{
-  display:none;
-}
+    .section-title {
+      margin: 0 0 8px;
 
-.page.active{
-  display:block;
-}
+      font-size: 28px;
+      font-weight: 800;
+    }
 
+    .section-description {
+      margin: 0 0 25px;
 
-/* =========================================================
-   SECTIONS
-========================================================= */
+      color: #6f6f6f;
+      font-size: 15px;
+    }
 
-section{
-  background:white;
 
-  border-radius:24px;
+    /* =========================================================
+       6. КАРТОЧКИ
+       ========================================================= */
 
-  padding:24px;
+    .cards {
+      display: grid;
 
-  box-shadow:0 4px 20px rgba(0,0,0,.045);
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
 
-  margin-bottom:16px;
-}
+      gap: 15px;
+    }
 
-h2{
-  margin:0 0 18px;
+    .card {
+      background: #ffffff;
 
-  font-size:22px;
-}
+      border-radius: 18px;
 
-h3{
-  margin:0;
+      padding: 22px;
 
-  font-size:18px;
-}
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
+    }
 
+    .card-title {
+      font-size: 14px;
+      color: #777777;
 
-/* =========================================================
-   CARDS
-========================================================= */
+      margin-bottom: 8px;
+    }
 
-.cards{
-  display:grid;
+    .card-value {
+      font-size: 30px;
+      font-weight: 800;
+    }
 
-  grid-template-columns:
-    repeat(4,1fr);
 
-  gap:12px;
-}
+    /* =========================================================
+       7. МЕСЯЦЫ
+       ========================================================= */
 
-.card{
-  background:#202020;
+    .month-block {
+      background: #ffffff;
 
-  color:white;
+      border-radius: 20px;
 
-  border-radius:20px;
+      padding: 25px;
 
-  padding:20px;
+      margin-bottom: 22px;
 
-  min-height:120px;
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
+    }
 
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
+    .month-title {
+      margin: 0 0 20px;
 
-.label{
-  font-size:13px;
+      font-size: 22px;
+      font-weight: 800;
+    }
 
-  color:#d8d8d8;
+    .month-summary {
+      display: grid;
 
-  margin-bottom:8px;
-}
+      grid-template-columns:
+        repeat(auto-fit, minmax(130px, 1fr));
 
-.value{
-  font-size:32px;
+      gap: 12px;
 
-  line-height:1;
+      margin-bottom: 22px;
+    }
 
-  font-weight:900;
-}
+    .month-summary-item {
+      background: #f7f5f0;
 
-.unit{
-  font-size:13px;
+      border-radius: 14px;
 
-  color:#bcbcbc;
+      padding: 15px;
+    }
 
-  margin-top:7px;
-}
+    .month-summary-label {
+      font-size: 12px;
+      color: #777777;
 
+      margin-bottom: 5px;
+    }
 
-/* =========================================================
-   GRID
-========================================================= */
+    .month-summary-value {
+      font-size: 21px;
+      font-weight: 800;
+    }
 
-.grid{
-  display:grid;
 
-  grid-template-columns:
-    1.3fr .9fr;
+    /* =========================================================
+       8. ТАБЛИЦА УЧАСТНИКОВ
+       ========================================================= */
 
-  gap:16px;
-}
+    .participants-table {
+      width: 100%;
 
+      border-collapse: collapse;
+    }
 
-/* =========================================================
-   PERIOD TITLE
-========================================================= */
+    .participants-table th {
+      text-align: left;
 
-.period-title{
-  display:flex;
+      padding: 10px;
 
-  justify-content:space-between;
+      font-size: 12px;
+      color: #777777;
 
-  align-items:center;
+      border-bottom: 1px solid #eeeeee;
+    }
 
-  gap:12px;
+    .participants-table td {
+      padding: 12px 10px;
 
-  margin-bottom:14px;
-}
+      border-bottom: 1px solid #eeeeee;
 
-.period-title span{
-  color:#777;
+      font-size: 14px;
+    }
 
-  font-size:13px;
-}
+    .participants-table tr:last-child td {
+      border-bottom: none;
+    }
 
+    .participant-name {
+      font-weight: 700;
+    }
 
-/* =========================================================
-   RANKING
-========================================================= */
+    .participant-km {
+      font-weight: 800;
+    }
 
-.rank{
-  display:flex;
 
-  align-items:center;
+    /* =========================================================
+       9. РЕЙТИНГИ
+       ========================================================= */
 
-  gap:12px;
+    .rating-list {
+      display: flex;
 
-  padding:13px 0;
+      flex-direction: column;
 
-  border-bottom:1px solid #eee;
-}
+      gap: 10px;
+    }
 
-.rank:last-child{
-  border-bottom:0;
-}
+    .rating-item {
+      display: flex;
 
-.place{
-  width:38px;
+      align-items: center;
 
-  min-width:38px;
+      gap: 14px;
 
-  font-size:22px;
+      background: #ffffff;
 
-  text-align:center;
-}
+      border-radius: 16px;
 
-.name{
-  flex:1;
+      padding: 15px 18px;
 
-  font-weight:800;
-}
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.04);
+    }
 
-.km{
-  font-weight:900;
+    .rating-place {
+      width: 35px;
 
-  white-space:nowrap;
-}
+      font-size: 20px;
 
-.bar{
-  height:8px;
+      text-align: center;
+    }
 
-  background:#e8e6e1;
+    .rating-name {
+      flex: 1;
 
-  border-radius:99px;
+      font-weight: 700;
+    }
 
-  overflow:hidden;
+    .rating-value {
+      font-weight: 800;
+    }
 
-  margin-top:7px;
-}
 
-.bar i{
-  display:block;
+    /* =========================================================
+       10. НОМИНАЦИИ
+       ========================================================= */
 
-  height:100%;
+    .nominations-grid {
+      display: grid;
 
-  background:#202020;
+      grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
 
-  border-radius:99px;
-}
+      gap: 18px;
+    }
 
+    .nomination-card {
+      background: #ffffff;
 
-/* =========================================================
-   MONTH BUTTONS
-========================================================= */
+      border-radius: 20px;
 
-.month-buttons{
-  display:flex;
+      padding: 25px;
 
-  flex-wrap:wrap;
+      text-align: center;
 
-  gap:8px;
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
 
-  margin-bottom:18px;
-}
+      transition: transform 0.2s;
+    }
 
-.month-buttons button{
-  border:0;
+    .nomination-card:hover {
+      transform: translateY(-3px);
+    }
 
-  background:#eeeae3;
+    .nomination-icon {
+      width: 120px;
+      height: 120px;
 
-  color:#202020;
+      object-fit: contain;
 
-  border-radius:999px;
+      display: block;
 
-  padding:9px 14px;
+      margin: 0 auto 15px;
+    }
 
-  cursor:pointer;
+    .nomination-title {
+      font-size: 18px;
 
-  font-weight:800;
-}
+      font-weight: 800;
 
-.month-buttons button.active{
-  background:#202020;
+      margin-bottom: 8px;
+    }
 
-  color:white;
-}
+    .nomination-name {
+      font-size: 16px;
 
+      font-weight: 700;
 
-/* =========================================================
-   MONTH STATISTICS
-========================================================= */
+      margin-bottom: 5px;
+    }
 
-.month-block{
-  background:#f7f5f0;
+    .nomination-value {
+      color: #777777;
 
-  border-radius:20px;
+      font-size: 14px;
+    }
 
-  padding:20px;
 
-  margin-bottom:14px;
-}
+    /* =========================================================
+       11. СООБЩЕНИЯ / ЗАГРУЗКА
+       ========================================================= */
 
-.month-block:last-child{
-  margin-bottom:0;
-}
+    .loading {
+      text-align: center;
 
-.month-header{
-  display:flex;
+      padding: 40px;
 
-  justify-content:space-between;
+      color: #777777;
+    }
 
-  align-items:center;
+    .empty {
+      background: #ffffff;
 
-  gap:10px;
+      border-radius: 18px;
 
-  margin-bottom:16px;
-}
+      padding: 30px;
 
-.month-title{
-  font-size:20px;
+      text-align: center;
 
-  font-weight:900;
-}
+      color: #777777;
+    }
 
-.month-total{
-  text-align:right;
-}
+    .error {
+      background: #fff0f0;
 
-.month-total strong{
-  display:block;
+      color: #a00000;
 
-  font-size:20px;
-}
+      border-radius: 15px;
 
-.month-total span{
-  font-size:12px;
+      padding: 20px;
 
-  color:#777;
-}
+      margin-bottom: 20px;
+    }
 
 
-/* =========================================================
-   PARTICIPANTS IN MONTH
-========================================================= */
+    /* =========================================================
+       12. ПОДВАЛ
+       ========================================================= */
 
-.participant{
-  display:grid;
+    footer {
+      text-align: center;
 
-  grid-template-columns:
-    1fr 100px 100px;
+      color: #888888;
 
-  align-items:center;
+      font-size: 13px;
 
-  gap:12px;
+      padding: 25px 15px 40px;
+    }
 
-  padding:11px 0;
 
-  border-top:1px solid #e3e0da;
-}
+    /* =========================================================
+       13. МОБИЛЬНАЯ ВЕРСИЯ
+       ========================================================= */
 
-.participant-name{
-  font-weight:800;
-}
+    @media (max-width: 600px) {
 
-.participant-runs{
-  text-align:center;
+      header {
+        padding-top: 22px;
+      }
 
-  color:#666;
+      .header-logo {
+        width: 90px;
+        height: 90px;
+      }
 
-  font-size:13px;
-}
+      .header-title {
+        font-size: 23px;
+      }
 
-.participant-km{
-  text-align:right;
+      main {
+        width: min(100% - 20px, 1100px);
 
-  font-weight:900;
-}
+        padding-top: 25px;
+      }
 
+      .section-title {
+        font-size: 24px;
+      }
 
-/* =========================================================
-   LEADERS
-========================================================= */
+      .month-block {
+        padding: 18px;
+      }
 
-.leader{
-  background:#f7f5f0;
+      .participants-table th,
+      .participants-table td {
+        padding: 9px 5px;
+      }
 
-  border-radius:18px;
+      .nomination-icon {
+        width: 100px;
+        height: 100px;
+      }
+    }
 
-  padding:17px;
-
-  margin-bottom:10px;
-}
-
-.leader:last-child{
-  margin-bottom:0;
-}
-
-.leader-name{
-  font-size:20px;
-
-  font-weight:900;
-
-  margin:4px 0;
-}
-
-
-/* =========================================================
-   NOMINATIONS
-========================================================= */
-
-.nominations{
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
-  gap:14px;
-}
-
-.nomination{
-  position:relative;
-
-  overflow:hidden;
-
-  background:#202020;
-
-  color:white;
-
-  border-radius:22px;
-
-  padding:22px;
-
-  min-height:190px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  justify-content:center;
-}
-
-.nomination-icon{
-  width:64px;
-  height:64px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:18px;
-
-  background:#f7f5f0;
-
-  color:#202020;
-
-  font-size:34px;
-
-  margin-bottom:14px;
-}
-
-.nomination-title{
-  color:white;
-
-  font-size:13px;
-
-  font-weight:800;
-
-  text-transform:uppercase;
-
-  letter-spacing:.5px;
-
-  margin-bottom:7px;
-}
-
-.nomination-name{
-  color:white;
-
-  font-size:21px;
-
-  font-weight:900;
-}
-
-.nomination-value{
-  margin-top:6px;
-
-  color:#d0d0d0;
-
-  font-size:14px;
-}
-
-
-/* =========================================================
-   EMPTY
-========================================================= */
-
-.empty{
-  color:#777;
-
-  padding:15px 0;
-
-  font-size:14px;
-}
-
-.note{
-  color:#777;
-
-  font-size:13px;
-
-  margin-top:10px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:850px){
-
-  .cards{
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-}
-
-
-@media(max-width:560px){
-
-  .wrap{
-    padding:10px 9px 35px;
-  }
-
-  header{
-    padding:20px;
-
-    border-radius:22px;
-
-    gap:14px;
-  }
-
-  .header-logo{
-    width:64px;
-    height:64px;
-
-    border-radius:14px;
-  }
-
-  h1{
-    font-size:29px;
-  }
-
-  .sub{
-    font-size:12px;
-  }
-
-  .nav{
-    overflow-x:auto;
-
-    flex-wrap:nowrap;
-
-    padding-bottom:4px;
-  }
-
-  .nav button{
-    white-space:nowrap;
-
-    padding:10px 14px;
-  }
-
-  section{
-    padding:17px;
-
-    border-radius:19px;
-  }
-
-  .cards{
-    gap:8px;
-  }
-
-  .card{
-    padding:15px;
-
-    min-height:105px;
-  }
-
-  .value{
-    font-size:24px;
-  }
-
-  .participant{
-    grid-template-columns:
-      1fr 65px 70px;
-
-    gap:6px;
-
-    font-size:13px;
-  }
-
-  .participant-runs{
-    font-size:11px;
-  }
-
-  .participant-km{
-    font-size:13px;
-  }
-
-  .nominations{
-    grid-template-columns:1fr;
-  }
-
-  .nomination{
-    min-height:170px;
-  }
-
-  .month-header{
-    align-items:flex-start;
-  }
-
-  .month-title{
-    font-size:18px;
-  }
-
-  .month-total strong{
-    font-size:17px;
-  }
-
-}
-
-
-/* =========================================================
-   VERY SMALL PHONE
-========================================================= */
-
-@media(max-width:380px){
-
-  .cards{
-    grid-template-columns:1fr;
-  }
-
-  .rank{
-    gap:6px;
-  }
-
-  .place{
-    width:30px;
-    min-width:30px;
-  }
-
-  .km{
-    font-size:13px;
-  }
-
-}
-
-</style>
+  </style>
 </head>
 
 
 <body>
 
-<div class="wrap">
 
+  <!-- =========================================================
+       ШАПКА
+       ========================================================= -->
 
-<!-- ===================================================== -->
-<!-- HEADER -->
-<!-- ===================================================== -->
+  <header>
 
-<header>
+    <img
+      src="logo.png"
+      alt="Логотип клуба"
+      class="header-logo"
+    >
 
-  <!--
-    ВАЖНО:
-    Файл логотипа должен называться logo.png
-    и лежать рядом с index.html в GitHub.
-  -->
-
-  <img
-    src="logo.png"
-    class="header-logo"
-    alt="Логотип клуба"
-  >
-
-  <div class="header-text">
-
-    <h1>
+    <h1 class="header-title">
       #От_Омска_не_убежишь
     </h1>
 
-    <div class="sub">
-      Статистика клуба · километры · рейтинги · достижения
-    </div>
-
-  </div>
-
-</header>
+    <p class="header-subtitle">
+      Километры. Люди. Сибирский характер.
+    </p>
 
 
-<!-- ===================================================== -->
-<!-- NAVIGATION -->
-<!-- ===================================================== -->
+    <!-- =======================================================
+         НАВИГАЦИЯ
+         ======================================================= -->
 
-<nav class="nav">
+    <nav>
 
-  <button
-    class="active"
-    onclick="showPage('home',this)"
-  >
-    🏠 Главная
-  </button>
+      <button
+        class="nav-button active"
+        data-section="home"
+      >
+        Главная
+      </button>
 
-  <button
-    onclick="showPage('ratings',this)"
-  >
-    🏆 Рейтинги
-  </button>
+      <button
+        class="nav-button"
+        data-section="ratings"
+      >
+        Рейтинги
+      </button>
 
-  <button
-    onclick="showPage('stats',this)"
-  >
-    📊 Статистика
-  </button>
+      <button
+        class="nav-button"
+        data-section="statistics"
+      >
+        Статистика
+      </button>
 
-  <button
-    onclick="showPage('nominations',this)"
-  >
-    🏅 Номинации
-  </button>
+      <button
+        class="nav-button"
+        data-section="nominations"
+      >
+        Номинации
+      </button>
 
-</nav>
+    </nav>
 
-
-<!-- ===================================================== -->
-<!-- ГЛАВНАЯ -->
-<!-- ===================================================== -->
-
-<div
-  id="home"
-  class="page active"
->
-
-  <section>
-
-    <div class="period-title">
-
-      <div>
-
-        <h2 id="currentTitle">
-          Текущий месяц
-        </h2>
-
-      </div>
-
-    </div>
+  </header>
 
 
-    <div class="cards">
+
+  <!-- =========================================================
+       ОСНОВНОЙ КОНТЕНТ
+       ========================================================= -->
+
+  <main>
 
 
-      <div class="card">
+    <!-- =======================================================
+         ГЛАВНАЯ
+         ======================================================= -->
 
-        <div class="label">
-          Километраж
-        </div>
+    <section
+      id="home"
+      class="section active"
+    >
 
-        <div
-          class="value"
-          id="currentKm"
-        >
-          0
-        </div>
-
-        <div class="unit">
-          км
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="label">
-          Участников
-        </div>
-
-        <div
-          class="value"
-          id="currentPeople"
-        >
-          0
-        </div>
-
-        <div class="unit">
-          бегунов
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="label">
-          Тренировок
-        </div>
-
-        <div
-          class="value"
-          id="currentRuns"
-        >
-          0
-        </div>
-
-        <div class="unit">
-          пробежек
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="label">
-          Среднее
-        </div>
-
-        <div
-          class="value"
-          id="currentAvg"
-        >
-          0
-        </div>
-
-        <div class="unit">
-          км / участника
-        </div>
-
-      </div>
-
-
-    </div>
-
-  </section>
-
-
-  <div class="grid">
-
-
-    <!-- ТЕКУЩИЙ РЕЙТИНГ -->
-
-    <section>
-
-      <div class="period-title">
-
-        <h2>
-          🏆 Рейтинг текущего месяца
-        </h2>
-
-        <span id="currentRankMonth"></span>
-
-      </div>
-
-      <div id="currentRanking"></div>
-
-    </section>
-
-
-    <!-- ЛИДЕРЫ -->
-
-    <section>
-
-      <h2>
-        👑 Лидеры месяцев
+      <h2 class="section-title">
+        Статистика клуба
       </h2>
 
-      <div id="leaders"></div>
+      <p class="section-description">
+        Считаем километры вместе и смотрим,
+        как растёт наш клуб.
+      </p>
+
+
+      <div
+        id="generalStats"
+        class="cards"
+      >
+
+        <div class="loading">
+          Загружаем статистику...
+        </div>
+
+      </div>
 
     </section>
 
 
-  </div>
 
-</div>
+    <!-- =======================================================
+         РЕЙТИНГИ
+         ======================================================= -->
 
+    <section
+      id="ratings"
+      class="section"
+    >
 
-<!-- ===================================================== -->
-<!-- РЕЙТИНГИ -->
-<!-- ===================================================== -->
+      <h2 class="section-title">
+        Рейтинги
+      </h2>
 
-<div
-  id="ratings"
-  class="page"
->
+      <p class="section-description">
+        Участники клуба по общему количеству километров.
+      </p>
 
+      <div
+        id="ratingsList"
+        class="rating-list"
+      >
 
-  <section>
-
-    <h2>
-      🏆 Рейтинги по месяцам
-    </h2>
-
-
-    <div
-      id="ratingMonthButtons"
-      class="month-buttons"
-    ></div>
-
-
-    <div id="selectedMonthTitle"></div>
-
-    <div id="selectedRanking"></div>
-
-  </section>
-
-
-  <section>
-
-    <h2>
-      🏆 Общий рейтинг клуба
-    </h2>
-
-    <div id="allRanking"></div>
-
-  </section>
-
-
-</div>
-
-
-<!-- ===================================================== -->
-<!-- СТАТИСТИКА -->
-<!-- ===================================================== -->
-
-<div
-  id="stats"
-  class="page"
->
-
-  <section>
-
-    <h2>
-      📊 Статистика по месяцам
-    </h2>
-
-    <div
-      id="months"
-    ></div>
-
-  </section>
-
-</div>
-
-
-<!-- ===================================================== -->
-<!-- НОМИНАЦИИ -->
-<!-- ===================================================== -->
-
-<div
-  id="nominations"
-  class="page"
->
-
-  <section>
-
-    <h2>
-      🏅 Номинации
-    </h2>
-
-
-    <div class="nominations">
-
-
-      <!-- САМЫЙ БЫСТРЫЙ -->
-
-      <div class="nomination">
-
-        <div class="nomination-icon">
-          ⚡
-        </div>
-
-        <div class="nomination-title">
-          Самый быстрый
-        </div>
-
-        <div
-          class="nomination-name"
-          id="fastestName"
-        >
-          —
-        </div>
-
-        <div
-          class="nomination-value"
-          id="fastestValue"
-        >
-          —
+        <div class="loading">
+          Загружаем рейтинг...
         </div>
 
       </div>
 
-
-      <!-- САМЫЙ АКТИВНЫЙ -->
-
-      <div class="nomination">
-
-        <div class="nomination-icon">
-          📅
-        </div>
-
-        <div class="nomination-title">
-          Самый активный
-        </div>
-
-        <div
-          class="nomination-name"
-          id="activeName"
-        >
-          —
-        </div>
-
-        <div
-          class="nomination-value"
-          id="activeValue"
-        >
-          —
-        </div>
-
-      </div>
+    </section>
 
 
-      <!-- САМАЯ ДЛИННАЯ -->
 
-      <div class="nomination">
+    <!-- =======================================================
+         СТАТИСТИКА
+         ======================================================= -->
 
-        <div class="nomination-icon">
-          🛣️
-        </div>
+    <section
+      id="statistics"
+      class="section"
+    >
 
-        <div class="nomination-title">
-          Самая длинная дистанция
-        </div>
+      <h2 class="section-title">
+        Статистика
+      </h2>
 
-        <div
-          class="nomination-name"
-          id="longestName"
-        >
-          —
-        </div>
+      <p class="section-description">
+        Все месяцы, в которых были зарегистрированы пробежки.
+      </p>
 
-        <div
-          class="nomination-value"
-          id="longestValue"
-        >
-          —
+      <div id="monthsContainer">
+
+        <div class="loading">
+          Загружаем месячную статистику...
         </div>
 
       </div>
 
+    </section>
 
-      <!-- БОЛЬШЕ ВСЕГО КМ -->
 
-      <div class="nomination">
 
-        <div class="nomination-icon">
-          👟
+    <!-- =======================================================
+         НОМИНАЦИИ
+         ======================================================= -->
+
+    <section
+      id="nominations"
+      class="section"
+    >
+
+      <h2 class="section-title">
+        Номинации
+      </h2>
+
+      <p class="section-description">
+        Наши клубные достижения.
+      </p>
+
+
+      <div class="nominations-grid">
+
+
+        <!-- Самый быстрый -->
+
+        <div class="nomination-card">
+
+          <img
+            src="nomination_fast.png"
+            alt="Самый быстрый"
+            class="nomination-icon"
+          >
+
+          <div class="nomination-title">
+            Самый быстрый
+          </div>
+
+          <div
+            id="nominationFastName"
+            class="nomination-name"
+          >
+            —
+          </div>
+
+          <div
+            id="nominationFastValue"
+            class="nomination-value"
+          >
+            —
+          </div>
+
         </div>
 
-        <div class="nomination-title">
-          Больше всего километров
+
+        <!-- Самый активный -->
+
+        <div class="nomination-card">
+
+          <img
+            src="nomination_active.png"
+            alt="Самый активный"
+            class="nomination-icon"
+          >
+
+          <div class="nomination-title">
+            Самый активный
+          </div>
+
+          <div
+            id="nominationActiveName"
+            class="nomination-name"
+          >
+            —
+          </div>
+
+          <div
+            id="nominationActiveValue"
+            class="nomination-value"
+          >
+            —
+          </div>
+
         </div>
 
-        <div
-          class="nomination-name"
-          id="kmName"
-        >
-          —
+
+        <!-- Самая длинная дистанция -->
+
+        <div class="nomination-card">
+
+          <img
+            src="nomination_long.png"
+            alt="Самая длинная дистанция"
+            class="nomination-icon"
+          >
+
+          <div class="nomination-title">
+            Самая длинная дистанция
+          </div>
+
+          <div
+            id="nominationLongName"
+            class="nomination-name"
+          >
+            —
+          </div>
+
+          <div
+            id="nominationLongValue"
+            class="nomination-value"
+          >
+            —
+          </div>
+
         </div>
 
-        <div
-          class="nomination-value"
-          id="kmValue"
-        >
-          —
+
+        <!-- Больше всего километров -->
+
+        <div class="nomination-card">
+
+          <img
+            src="nomination_km.png"
+            alt="Больше всего километров"
+            class="nomination-icon"
+          >
+
+          <div class="nomination-title">
+            Больше всего километров
+          </div>
+
+          <div
+            id="nominationKmName"
+            class="nomination-name"
+          >
+            —
+          </div>
+
+          <div
+            id="nominationKmValue"
+            class="nomination-value"
+          >
+            —
+          </div>
+
         </div>
+
 
       </div>
 
+    </section>
 
-    </div>
-
-  </section>
-
-</div>
+  </main>
 
 
-</div>
+
+  <!-- =========================================================
+       ПОДВАЛ
+       ========================================================= -->
+
+  <footer>
+
+    #От_Омска_не_убежишь · Бежим вместе 🏃
+
+  </footer>
 
 
-<script>
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+
+  <script>
 
 
-/* =========================================================
-   GOOGLE SHEETS
-========================================================= */
+    /* =========================================================
+       1. GOOGLE SHEETS
+       ========================================================= */
 
-const SHEET_URL =
-'https://docs.google.com/spreadsheets/d/e/2PACX-1vQan5aWH0h1auf7wBZbeTlRkgK3WreXEg24CjR0o-zo5aGvLGyFtTNK11pTCFJBNN0H_aC2thKuHjA4/pub?gid=0&single=true&output=csv';
-
-
-/* =========================================================
-   DATA
-========================================================= */
-
-let runs = [];
-
-let currentMonth = null;
-
-let selectedRatingMonth = null;
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQan5aWH0h1auf7wBZbeTlRkgK3WreXEg24CjR0o-zo5aGvLGyFtTNK11pTCFJBNN0H_aC2thKuHjA4/pub?gid=0&single=true&output=csv";
 
 
-/* =========================================================
-   CSV
-========================================================= */
+    /* =========================================================
+       2. ХРАНЕНИЕ ДАННЫХ
+       ========================================================= */
 
-function parseCSV(text){
-
-  const rows=[];
-
-  let row=[];
-
-  let cell='';
-
-  let quotes=false;
+    let runs = [];
 
 
-  for(let i=0;i<text.length;i++){
+    /* =========================================================
+       3. НАВИГАЦИЯ
+       ========================================================= */
 
-    const char=text[i];
+    document
+      .querySelectorAll(".nav-button")
+      .forEach(button => {
 
-    const next=text[i+1];
+        button.addEventListener("click", () => {
+
+          const sectionId =
+            button.dataset.section;
 
 
-    if(
-      char === '"' &&
-      quotes &&
-      next === '"'
-    ){
+          document
+            .querySelectorAll(".nav-button")
+            .forEach(btn =>
+              btn.classList.remove("active")
+            );
 
-      cell += '"';
 
-      i++;
+          document
+            .querySelectorAll(".section")
+            .forEach(section =>
+              section.classList.remove("active")
+            );
 
-    }
 
-    else if(char === '"'){
+          button.classList.add("active");
 
-      quotes=!quotes;
 
-    }
+          document
+            .getElementById(sectionId)
+            .classList.add("active");
 
-    else if(
-      char === ',' &&
-      !quotes
-    ){
+        });
 
-      row.push(cell);
+      });
 
-      cell='';
 
-    }
+    /* =========================================================
+       4. РАЗБОР CSV
+       ========================================================= */
 
-    else if(
-      (
-        char === '\n' ||
-        char === '\r'
-      ) &&
-      !quotes
-    ){
+    function parseCSV(text) {
 
-      if(
-        char === '\r' &&
-        next === '\n'
-      ){
-        i++;
+      const rows = [];
+
+      let row = [];
+      let cell = "";
+      let insideQuotes = false;
+
+
+      for (let i = 0; i < text.length; i++) {
+
+        const char = text[i];
+        const next = text[i + 1];
+
+
+        if (char === '"' && insideQuotes && next === '"') {
+
+          cell += '"';
+
+          i++;
+
+        }
+
+        else if (char === '"') {
+
+          insideQuotes = !insideQuotes;
+
+        }
+
+        else if (char === "," && !insideQuotes) {
+
+          row.push(cell.trim());
+
+          cell = "";
+
+        }
+
+        else if (
+          (char === "\n" || char === "\r")
+          && !insideQuotes
+        ) {
+
+          if (cell !== "" || row.length > 0) {
+
+            row.push(cell.trim());
+
+            rows.push(row);
+
+            row = [];
+            cell = "";
+
+          }
+
+        }
+
+        else {
+
+          cell += char;
+
+        }
+
       }
 
 
-      row.push(cell);
+      if (cell !== "" || row.length > 0) {
 
-      cell='';
-
-
-      if(
-        row.some(
-          x => x.trim() !== ''
-        )
-      ){
+        row.push(cell.trim());
 
         rows.push(row);
 
       }
 
 
-      row=[];
+      return rows;
 
     }
 
-    else{
 
-      cell+=char;
+    /* =========================================================
+       5. НОРМАЛИЗАЦИЯ ДАТЫ
+       ========================================================= */
+
+    function normalizeDate(value) {
+
+      if (!value) return null;
+
+
+      value = value.trim();
+
+
+      let match =
+        value.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+
+
+      if (match) {
+
+        return new Date(
+          `${match[3]}-${match[2]}-${match[1]}`
+        );
+
+      }
+
+
+      match =
+        value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+
+      if (match) {
+
+        return new Date(value);
+
+      }
+
+
+      return null;
 
     }
 
-  }
 
+    /* =========================================================
+       6. ЧИСЛО
+       ========================================================= */
 
-  row.push(cell);
+    function numberValue(value) {
 
+      if (!value) return 0;
 
-  if(
-    row.some(
-      x => x.trim() !== ''
-    )
-  ){
+      return parseFloat(
+        String(value)
+          .replace(",", ".")
+          .replace(/[^\d.-]/g, "")
+      ) || 0;
 
-    rows.push(row);
+    }
 
-  }
 
+    /* =========================================================
+       7. ВРЕМЯ
+       ========================================================= */
 
-  return rows;
+    function timeToSeconds(value) {
 
-}
+      if (!value) return 0;
 
 
-/* =========================================================
-   DATE
-========================================================= */
+      const parts =
+        value.split(":").map(Number);
 
-function normalizeDate(value){
 
-  if(!value) return null;
+      if (parts.length === 3) {
 
+        return (
+          parts[0] * 3600 +
+          parts[1] * 60 +
+          parts[2]
+        );
 
-  value=String(value).trim();
+      }
 
 
-  if(
-    /^\d{2}\.\d{2}\.\d{4}$/.test(value)
-  ){
+      if (parts.length === 2) {
 
-    const p=value.split('.');
+        return (
+          parts[0] * 60 +
+          parts[1]
+        );
 
-    return `
-      ${p[2]}-${p[1]}-${p[0]}
-    `.replace(/\s/g,'');
+      }
 
-  }
 
+      return 0;
 
-  if(
-    /^\d{4}-\d{2}-\d{2}$/.test(value)
-  ){
+    }
 
-    return value;
 
-  }
+    /* =========================================================
+       8. ФОРМАТ МЕСЯЦА
+       ========================================================= */
 
+    function monthKey(date) {
 
-  const d=new Date(value);
-
-
-  if(
-    isNaN(d.getTime())
-  ){
-
-    return null;
-
-  }
-
-
-  return [
-
-    d.getFullYear(),
-
-    String(
-      d.getMonth()+1
-    ).padStart(2,'0'),
-
-    String(
-      d.getDate()
-    ).padStart(2,'0')
-
-  ].join('-');
-
-}
-
-
-/* =========================================================
-   NUMBER
-========================================================= */
-
-function number(value){
-
-  if(
-    value === undefined ||
-    value === null
-  ){
-    return 0;
-  }
-
-
-  return parseFloat(
-
-    String(value)
-
-      .replace(/\s/g,'')
-
-      .replace(',','.')
-
-  ) || 0;
-
-}
-
-
-/* =========================================================
-   MONTH
-========================================================= */
-
-function monthKey(date){
-
-  return date.substring(0,7);
-
-}
-
-
-function monthLabel(key){
-
-  const names=[
-
-    'Январь',
-    'Февраль',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль',
-    'Август',
-    'Сентябрь',
-    'Октябрь',
-    'Ноябрь',
-    'Декабрь'
-
-  ];
-
-
-  const year=
-    key.substring(0,4);
-
-
-  const month=
-    parseInt(
-      key.substring(5,7)
-    );
-
-
-  return (
-    names[month-1] +
-    ' ' +
-    year
-  );
-
-}
-
-
-/* =========================================================
-   LOAD DATA
-========================================================= */
-
-async function loadData(){
-
-  try{
-
-    const response=
-      await fetch(
-        SHEET_URL +
-        '&_=' +
-        Date.now()
-      );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        'Ошибка загрузки таблицы'
+      return (
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0")
       );
 
     }
 
 
-    const csv=
-      await response.text();
+    function monthTitle(key) {
+
+      const [
+        year,
+        month
+      ] = key.split("-");
 
 
-    const rows=
-      parseCSV(csv);
+      const names = [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь"
+      ];
 
 
-    runs=[];
-
-
-    /*
-      ПРОБЕЖКИ:
-
-      A дата
-      B участник
-      C км
-      D время
-      E темп
-      F тип
-      G комментарий
-      H часы
-      I минуты
-      J секунды
-      K статус
-    */
-
-
-    for(
-      let i=1;
-      i<rows.length;
-      i++
-    ){
-
-      const row=rows[i];
-
-
-      const date=
-        normalizeDate(row[0]);
-
-
-      const name=
-        String(
-          row[1] || ''
-        ).trim();
-
-
-      const km=
-        number(row[2]);
-
-
-      const time=
-        String(
-          row[3] || ''
-        ).trim();
-
-
-      const pace=
-        String(
-          row[4] || ''
-        ).trim();
-
-
-      const type=
-        String(
-          row[5] || ''
-        ).trim();
-
-
-      const comment=
-        String(
-          row[6] || ''
-        ).trim();
-
-
-      const hours=
-        number(row[7]);
-
-
-      const minutes=
-        number(row[8]);
-
-
-      const seconds=
-        number(row[9]);
-
-
-      const status=
-        String(
-          row[10] || ''
-        ).trim();
-
-
-      /*
-        Учитываем только
-        статус "Учитывать"
-      */
-
-      if(
-        status !== 'Учитывать'
-      ){
-
-        continue;
-
-      }
-
-
-      if(
-        !date ||
-        !name ||
-        km <= 0
-      ){
-
-        continue;
-
-      }
-
-
-      runs.push({
-
-        date,
-
-        month:
-          monthKey(date),
-
-        name,
-
-        km,
-
-        time,
-
-        pace,
-
-        type,
-
-        comment,
-
-        hours,
-
-        minutes,
-
-        seconds,
-
-        status
-
-      });
+      return `${names[Number(month) - 1]} ${year}`;
 
     }
 
 
-    runs.sort(
-      (a,b)=>
-        a.date.localeCompare(
-          b.date
-        )
-    );
+    /* =========================================================
+       9. ЗАГРУЗКА ДАННЫХ
+       ========================================================= */
 
+    async function loadData() {
 
-    determineMonths();
+      try {
 
-    renderAll();
+        const response =
+          await fetch(SHEET_URL);
 
 
-  }
-  catch(error){
+        if (!response.ok) {
 
-    console.error(error);
-
-
-    document.getElementById(
-      'currentRanking'
-    ).innerHTML=
-      '<div class="empty">Не удалось загрузить данные</div>';
-
-  }
-
-}
-
-
-/* =========================================================
-   MONTHS
-========================================================= */
-
-function determineMonths(){
-
-  const months=
-    [
-      ...new Set(
-        runs.map(
-          x=>x.month
-        )
-      )
-    ].sort();
-
-
-  /*
-    ВАЖНО:
-
-    Берём только реальные месяцы,
-    которые присутствуют в runs.
-
-    Пустые месяцы здесь
-    никогда не создаются.
-  */
-
-
-  if(!months.length){
-
-    currentMonth=null;
-
-    selectedRatingMonth=null;
-
-    return;
-
-  }
-
-
-  currentMonth=
-    months[
-      months.length-1
-    ];
-
-
-  selectedRatingMonth=
-    currentMonth;
-
-}
-
-
-/* =========================================================
-   MONTH RUNS
-========================================================= */
-
-function monthRuns(month){
-
-  if(!month){
-    return [];
-  }
-
-
-  return runs.filter(
-    x=>x.month===month
-  );
-
-}
-
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
-function statistics(arr){
-
-  const km=
-    arr.reduce(
-      (sum,x)=>
-        sum+x.km,
-      0
-    );
-
-
-  const people=
-    new Set(
-      arr.map(
-        x=>x.name
-      )
-    ).size;
-
-
-  return {
-
-    km,
-
-    runs:arr.length,
-
-    people,
-
-    avg:
-      people
-        ? km/people
-        : 0
-
-  };
-
-}
-
-
-/* =========================================================
-   RANKING
-========================================================= */
-
-function ranking(arr){
-
-  const result={};
-
-
-  arr.forEach(x=>{
-
-    if(!result[x.name]){
-
-      result[x.name]=0;
-
-    }
-
-
-    result[x.name]+=x.km;
-
-  });
-
-
-  return Object.entries(result)
-
-    .map(
-      ([name,km])=>({
-        name,
-        km
-      })
-    )
-
-    .sort(
-      (a,b)=>
-        b.km-a.km
-    );
-
-}
-
-
-/* =========================================================
-   ESCAPE
-========================================================= */
-
-function escapeHTML(value){
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-
-    .replace(
-      /</g,
-      '&lt;'
-    )
-
-    .replace(
-      />/g,
-      '&gt;'
-    )
-
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-
-}
-
-
-/* =========================================================
-   RENDER RANKING
-========================================================= */
-
-function renderRanking(
-  elementId,
-  arr
-){
-
-  const element=
-    document.getElementById(
-      elementId
-    );
-
-
-  if(!arr.length){
-
-    element.innerHTML=
-      '<div class="empty">Пока нет пробежек</div>';
-
-    return;
-
-  }
-
-
-  const max=
-    Math.max(
-      ...arr.map(
-        x=>x.km
-      ),
-      1
-    );
-
-
-  element.innerHTML=
-    arr.map(
-      (x,i)=>{
-
-        let medal;
-
-
-        if(i===0){
-
-          medal='🥇';
-
-        }
-        else if(i===1){
-
-          medal='🥈';
-
-        }
-        else if(i===2){
-
-          medal='🥉';
-
-        }
-        else{
-
-          medal=
-            `<span style="font-size:15px">${i+1}</span>`;
+          throw new Error(
+            "Не удалось загрузить Google Sheets"
+          );
 
         }
 
 
-        return `
+        const text =
+          await response.text();
 
-          <div class="rank">
 
-            <div class="place">
-              ${medal}
-            </div>
+        const table =
+          parseCSV(text);
 
-            <div class="name">
 
-              ${escapeHTML(x.name)}
+        if (table.length < 2) {
 
-              <div class="bar">
+          throw new Error(
+            "В таблице нет данных"
+          );
 
-                <i
-                  style="
-                    width:${
-                      x.km/max*100
-                    }%
-                  "
-                ></i>
+        }
 
-              </div>
 
-            </div>
+        runs = [];
 
-            <div class="km">
-              ${x.km.toFixed(1)} км
-            </div>
+
+        for (
+          let i = 1;
+          i < table.length;
+          i++
+        ) {
+
+          const row = table[i];
+
+
+          /*
+            Колонки:
+
+            A — Дата
+            B — Участник
+            C — Км
+            D — Время
+            E — Темп
+            F — Тип
+            G — Комментарий
+            H — Часы
+            I — Минуты
+            J — Секунды
+            K — Статус
+          */
+
+
+          const date =
+            normalizeDate(row[0]);
+
+
+          const participant =
+            row[1]?.trim();
+
+
+          const km =
+            numberValue(row[2]);
+
+
+          const time =
+            row[3]?.trim();
+
+
+          const status =
+            row[10]?.trim();
+
+
+          if (!date) continue;
+
+          if (!participant) continue;
+
+          if (!km) continue;
+
+          if (status !== "Учитывать") continue;
+
+
+          runs.push({
+
+            date,
+
+            participant,
+
+            km,
+
+            time,
+
+            month: monthKey(date),
+
+            seconds: timeToSeconds(time)
+
+          });
+
+        }
+
+
+        renderAll();
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+          "generalStats"
+        ).innerHTML = `
+
+          <div class="error">
+
+            Не удалось загрузить статистику.
+            Проверьте доступность Google Sheets.
 
           </div>
 
         `;
 
       }
-    ).join('');
 
-}
-
-
-/* =========================================================
-   HOME
-========================================================= */
-
-function renderHome(){
-
-  if(!currentMonth){
-
-    document.getElementById(
-      'currentTitle'
-    ).textContent=
-      'Пока нет пробежек';
+    }
 
 
-    document.getElementById(
-      'currentKm'
-    ).textContent='0';
+    /* =========================================================
+       10. ОБЩАЯ СТАТИСТИКА
+       ========================================================= */
+
+    function renderGeneralStats() {
+
+      const totalKm =
+        runs.reduce(
+          (sum, run) =>
+            sum + run.km,
+          0
+        );
 
 
-    document.getElementById(
-      'currentPeople'
-    ).textContent='0';
+      const totalRuns =
+        runs.length;
 
 
-    document.getElementById(
-      'currentRuns'
-    ).textContent='0';
+      const participants =
+        new Set(
+          runs.map(run =>
+            run.participant
+          )
+        ).size;
 
 
-    document.getElementById(
-      'currentAvg'
-    ).textContent='0';
+      const months =
+        new Set(
+          runs.map(run =>
+            run.month
+          )
+        ).size;
 
 
-    renderRanking(
-      'currentRanking',
-      []
-    );
+      document.getElementById(
+        "generalStats"
+      ).innerHTML = `
 
+        <div class="card">
 
-    document.getElementById(
-      'leaders'
-    ).innerHTML=
-      '<div class="empty">Пока нет данных</div>';
-
-    return;
-
-  }
-
-
-  const current=
-    monthRuns(
-      currentMonth
-    );
-
-
-  const stats=
-    statistics(current);
-
-
-  document.getElementById(
-    'currentTitle'
-  ).textContent=
-    monthLabel(
-      currentMonth
-    );
-
-
-  document.getElementById(
-    'currentKm'
-  ).textContent=
-    stats.km.toFixed(1);
-
-
-  document.getElementById(
-    'currentPeople'
-  ).textContent=
-    stats.people;
-
-
-  document.getElementById(
-    'currentRuns'
-  ).textContent=
-    stats.runs;
-
-
-  document.getElementById(
-    'currentAvg'
-  ).textContent=
-    stats.avg.toFixed(1);
-
-
-  document.getElementById(
-    'currentRankMonth'
-  ).textContent=
-    monthLabel(
-      currentMonth
-    );
-
-
-  renderRanking(
-    'currentRanking',
-    ranking(current)
-  );
-
-
-  /*
-    ЛИДЕРЫ МЕСЯЦЕВ
-
-    Показываем только реальные месяцы.
-  */
-
-  const months=
-    [
-      ...new Set(
-        runs.map(
-          x=>x.month
-        )
-      )
-    ].sort().reverse();
-
-
-  let html='';
-
-
-  months
-    .slice(0,4)
-    .forEach(month=>{
-
-      const leader=
-        ranking(
-          monthRuns(month)
-        )[0];
-
-
-      if(!leader){
-        return;
-      }
-
-
-      html+=`
-
-        <div class="leader">
-
-          <div class="label">
-            ${monthLabel(month)}
+          <div class="card-title">
+            Километры клуба
           </div>
 
-          <div class="leader-name">
-            🥇 ${escapeHTML(leader.name)}
+          <div class="card-value">
+            ${totalKm.toFixed(1)} км
           </div>
 
-          <div>
-            ${leader.km.toFixed(1)} км
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Пробежки
+          </div>
+
+          <div class="card-value">
+            ${totalRuns}
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Участники
+          </div>
+
+          <div class="card-value">
+            ${participants}
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Месяцы
+          </div>
+
+          <div class="card-value">
+            ${months}
           </div>
 
         </div>
 
       `;
 
-    });
+    }
 
 
-  document.getElementById(
-    'leaders'
-  ).innerHTML=
-    html ||
-    '<div class="empty">Пока нет лидеров</div>';
+    /* =========================================================
+       11. СТАТИСТИКА ПО МЕСЯЦАМ
+       ========================================================= */
 
-}
+    function renderMonths() {
 
+      const container =
+        document.getElementById(
+          "monthsContainer"
+        );
 
-/* =========================================================
-   RATINGS
-========================================================= */
 
-function renderRatings(){
+      const months =
+        [
+          ...new Set(
+            runs.map(run =>
+              run.month
+            )
+          )
+        ]
+        .sort()
+        .reverse();
 
-  const months=
-    [
-      ...new Set(
-        runs.map(
-          x=>x.month
-        )
-      )
-    ]
-    .sort()
-    .reverse();
 
+      if (!months.length) {
 
-  const buttons=
-    document.getElementById(
-      'ratingMonthButtons'
-    );
+        container.innerHTML = `
 
+          <div class="empty">
+            Пока нет данных.
+          </div>
 
-  /*
-    Только месяцы,
-    где реально были пробежки.
-  */
+        `;
 
-  buttons.innerHTML=
-    months.map(
-      month=>`
+        return;
 
-        <button
-          class="${
-            month===
-            selectedRatingMonth
-              ? 'active'
-              : ''
-          }"
+      }
 
-          onclick="
-            selectRatingMonth('${month}')
-          "
-        >
-          ${monthLabel(month)}
-        </button>
 
-      `
-    ).join('');
+      container.innerHTML = "";
 
 
-  if(!selectedRatingMonth){
+      months.forEach(month => {
 
-    document.getElementById(
-      'selectedMonthTitle'
-    ).innerHTML='';
+        const monthRuns =
+          runs.filter(
+            run =>
+              run.month === month
+          );
 
 
-    renderRanking(
-      'selectedRanking',
-      []
-    );
+        const totalKm =
+          monthRuns.reduce(
+            (sum, run) =>
+              sum + run.km,
+            0
+          );
 
-  }
-  else{
 
-    document.getElementById(
-      'selectedMonthTitle'
-    ).innerHTML=`
+        const participantsMap =
+          {};
 
-      <div class="leader">
 
-        <div class="label">
-          Рейтинг месяца
-        </div>
+        monthRuns.forEach(run => {
 
-        <div class="leader-name">
-          ${monthLabel(
-            selectedRatingMonth
-          )}
-        </div>
+          if (!participantsMap[run.participant]) {
 
-      </div>
+            participantsMap[run.participant] = {
 
-    `;
+              runs: 0,
+              km: 0
 
-
-    renderRanking(
-      'selectedRanking',
-
-      ranking(
-        monthRuns(
-          selectedRatingMonth
-        )
-      )
-    );
-
-  }
-
-
-  renderRanking(
-    'allRanking',
-    ranking(runs)
-  );
-
-}
-
-
-function selectRatingMonth(month){
-
-  selectedRatingMonth=
-    month;
-
-  renderRatings();
-
-}
-
-
-/* =========================================================
-   MONTH STATISTICS
-========================================================= */
-
-function renderStats(){
-
-  const months=
-    [
-      ...new Set(
-        runs.map(
-          x=>x.month
-        )
-      )
-    ]
-    .sort()
-    .reverse();
-
-
-  const container=
-    document.getElementById(
-      'months'
-    );
-
-
-  /*
-    ВАЖНО:
-
-    Если нет пробежек,
-    нет и месяцев.
-  */
-
-  if(!months.length){
-
-    container.innerHTML=
-      '<div class="empty">Пока нет статистики</div>';
-
-    return;
-
-  }
-
-
-  container.innerHTML=
-    months.map(
-      month=>{
-
-        const arr=
-          monthRuns(month);
-
-
-        const stats=
-          statistics(arr);
-
-
-        /*
-          Собираем статистику
-          каждого участника.
-        */
-
-        const participants={};
-
-
-        arr.forEach(run=>{
-
-          if(
-            !participants[
-              run.name
-            ]
-          ){
-
-            participants[
-              run.name
-            ]={
-              runs:0,
-              km:0
             };
 
           }
 
 
-          participants[
-            run.name
+          participantsMap[
+            run.participant
           ].runs++;
 
 
-          participants[
-            run.name
-          ].km+=run.km;
+          participantsMap[
+            run.participant
+          ].km += run.km;
 
         });
 
 
-        /*
-          Сортировка:
-
-          1. больше км
-          2. если одинаково —
-             больше пробежек
-        */
-
-        const list=
+        const participants =
           Object.entries(
-            participants
-          )
-          .map(
-            ([name,data])=>({
-
-              name,
-
-              runs:data.runs,
-
-              km:data.km
-
-            })
+            participantsMap
           )
           .sort(
-            (a,b)=>{
+            (a, b) => {
 
-              if(
-                b.km !== a.km
-              ){
+              if (
+                b[1].km !==
+                a[1].km
+              ) {
 
-                return b.km-a.km;
+                return (
+                  b[1].km -
+                  a[1].km
+                );
 
               }
 
 
-              return b.runs-a.runs;
+              return (
+                b[1].runs -
+                a[1].runs
+              );
 
             }
           );
 
 
-        return `
+        const block =
+          document.createElement("div");
 
-          <div class="month-block">
+
+        block.className =
+          "month-block";
 
 
-            <div class="month-header">
+        block.innerHTML = `
 
-              <div class="month-title">
-                ${monthLabel(month)}
+          <h3 class="month-title">
+            ${monthTitle(month)}
+          </h3>
+
+
+          <div class="month-summary">
+
+            <div class="month-summary-item">
+
+              <div class="month-summary-label">
+                Километры клуба
               </div>
 
-              <div class="month-total">
-
-                <strong>
-                  ${stats.km.toFixed(1)} км
-                </strong>
-
-                <span>
-                  ${stats.runs} пробежек ·
-                  ${stats.people} участников
-                </span>
-
+              <div class="month-summary-value">
+                ${totalKm.toFixed(1)} км
               </div>
 
             </div>
 
 
-            <!-- ЗАГОЛОВКИ -->
+            <div class="month-summary-item">
 
-            <div
-              class="participant"
-              style="
-                border-top:0;
-                color:#888;
-                font-size:12px;
-              "
-            >
-
-              <div>
-                Участник
-              </div>
-
-              <div
-                style="
-                  text-align:center;
-                "
-              >
+              <div class="month-summary-label">
                 Пробежки
               </div>
 
-              <div
-                style="
-                  text-align:right;
-                "
-              >
-                Километры
+              <div class="month-summary-value">
+                ${monthRuns.length}
               </div>
 
             </div>
 
 
-            <!-- УЧАСТНИКИ -->
+            <div class="month-summary-item">
 
-            ${
-              list.map(
-                person=>`
+              <div class="month-summary-label">
+                Участники
+              </div>
 
-                  <div class="participant">
+              <div class="month-summary-value">
+                ${participants.length}
+              </div>
 
-                    <div
-                      class="participant-name"
-                    >
-                      ${escapeHTML(
-                        person.name
-                      )}
-                    </div>
+            </div>
 
-                    <div
-                      class="participant-runs"
-                    >
-                      ${person.runs}
-                    </div>
-
-                    <div
-                      class="participant-km"
-                    >
-                      ${person.km.toFixed(1)} км
-                    </div>
-
-                  </div>
-
-                `
-              ).join('')
-            }
+          </div>
 
 
+          <table class="participants-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Участник
+                </th>
+
+                <th>
+                  Пробежки
+                </th>
+
+                <th>
+                  Км
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              ${participants
+                .map(
+                  ([name, data]) => `
+
+                    <tr>
+
+                      <td class="participant-name">
+                        ${name}
+                      </td>
+
+                      <td>
+                        ${data.runs}
+                      </td>
+
+                      <td class="participant-km">
+                        ${data.km.toFixed(1)} км
+                      </td>
+
+                    </tr>
+
+                  `
+                )
+                .join("")}
+
+            </tbody>
+
+          </table>
+
+        `;
+
+
+        container.appendChild(block);
+
+      });
+
+    }
+
+
+    /* =========================================================
+       12. РЕЙТИНГ
+       ========================================================= */
+
+    function renderRatings() {
+
+      const totals =
+        {};
+
+
+      runs.forEach(run => {
+
+        if (!totals[run.participant]) {
+
+          totals[run.participant] = 0;
+
+        }
+
+
+        totals[run.participant] +=
+          run.km;
+
+      });
+
+
+      const rating =
+        Object.entries(totals)
+          .sort(
+            (a, b) =>
+              b[1] - a[1]
+          );
+
+
+      const container =
+        document.getElementById(
+          "ratingsList"
+        );
+
+
+      if (!rating.length) {
+
+        container.innerHTML = `
+
+          <div class="empty">
+            Пока нет данных.
           </div>
 
         `;
 
-      }
-    ).join('');
-
-}
-
-
-/* =========================================================
-   NOMINATIONS
-========================================================= */
-
-function renderNominations(){
-
-  /*
-    САМЫЙ БЫСТРЫЙ
-  */
-
-  const eligible=
-    runs.filter(
-      x=>x.km>=3
-    );
-
-
-  let fastest=null;
-
-
-  eligible.forEach(x=>{
-
-    let totalSeconds=0;
-
-
-    if(
-      x.hours ||
-      x.minutes ||
-      x.seconds
-    ){
-
-      totalSeconds=
-        x.hours*3600+
-        x.minutes*60+
-        x.seconds;
-
-    }
-
-
-    if(
-      !totalSeconds &&
-      x.time
-    ){
-
-      const parts=
-        x.time
-          .split(':')
-          .map(Number);
-
-
-      if(parts.length===3){
-
-        totalSeconds=
-          parts[0]*3600+
-          parts[1]*60+
-          parts[2];
+        return;
 
       }
 
-      else if(parts.length===2){
 
-        totalSeconds=
-          parts[0]*60+
-          parts[1];
+      container.innerHTML =
+        rating
+          .map(
+            ([name, km], index) => {
+
+              let place;
+
+
+              if (index === 0) {
+
+                place = "🥇";
+
+              }
+
+              else if (index === 1) {
+
+                place = "🥈";
+
+              }
+
+              else if (index === 2) {
+
+                place = "🥉";
+
+              }
+
+              else {
+
+                place =
+                  `${index + 1}`;
+
+              }
+
+
+              return `
+
+                <div class="rating-item">
+
+                  <div class="rating-place">
+                    ${place}
+                  </div>
+
+                  <div class="rating-name">
+                    ${name}
+                  </div>
+
+                  <div class="rating-value">
+                    ${km.toFixed(1)} км
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("");
+
+    }
+
+
+    /* =========================================================
+       13. НОМИНАЦИИ
+       ========================================================= */
+
+    function renderNominations() {
+
+
+      /* -------------------------------------------------------
+         Самый быстрый
+         ------------------------------------------------------- */
+
+      const eligible =
+        runs.filter(
+          run =>
+            run.km >= 3 &&
+            run.seconds > 0
+        );
+
+
+      if (eligible.length) {
+
+        const fastest =
+          eligible
+            .map(run => ({
+
+              ...run,
+
+              pace:
+                run.seconds /
+                run.km
+
+            }))
+            .sort(
+              (a, b) =>
+                a.pace - b.pace
+            )[0];
+
+
+        document.getElementById(
+          "nominationFastName"
+        ).textContent =
+          fastest.participant;
+
+
+        document.getElementById(
+          "nominationFastValue"
+        ).textContent =
+          `${formatPace(
+            fastest.pace
+          )} мин/км`;
+
+      }
+
+
+      /* -------------------------------------------------------
+         Самый активный
+         ------------------------------------------------------- */
+
+      const activity =
+        {};
+
+
+      runs.forEach(run => {
+
+        activity[run.participant] =
+          (
+            activity[run.participant] ||
+            0
+          ) + 1;
+
+      });
+
+
+      const active =
+        Object.entries(activity)
+          .sort(
+            (a, b) =>
+              b[1] - a[1]
+          )[0];
+
+
+      if (active) {
+
+        document.getElementById(
+          "nominationActiveName"
+        ).textContent =
+          active[0];
+
+
+        document.getElementById(
+          "nominationActiveValue"
+        ).textContent =
+          `${active[1]} пробежек`;
+
+      }
+
+
+      /* -------------------------------------------------------
+         Самая длинная дистанция
+         ------------------------------------------------------- */
+
+      const longest =
+        [...runs]
+          .sort(
+            (a, b) =>
+              b.km - a.km
+          )[0];
+
+
+      if (longest) {
+
+        document.getElementById(
+          "nominationLongName"
+        ).textContent =
+          longest.participant;
+
+
+        document.getElementById(
+          "nominationLongValue"
+        ).textContent =
+          `${longest.km.toFixed(1)} км`;
+
+      }
+
+
+      /* -------------------------------------------------------
+         Больше всего километров
+         ------------------------------------------------------- */
+
+      const totals =
+        {};
+
+
+      runs.forEach(run => {
+
+        totals[run.participant] =
+          (
+            totals[run.participant] ||
+            0
+          ) + run.km;
+
+      });
+
+
+      const kmLeader =
+        Object.entries(totals)
+          .sort(
+            (a, b) =>
+              b[1] - a[1]
+          )[0];
+
+
+      if (kmLeader) {
+
+        document.getElementById(
+          "nominationKmName"
+        ).textContent =
+          kmLeader[0];
+
+
+        document.getElementById(
+          "nominationKmValue"
+        ).textContent =
+          `${kmLeader[1].toFixed(1)} км`;
 
       }
 
     }
 
 
-    if(!totalSeconds){
-      return;
-    }
+    /* =========================================================
+       14. ФОРМАТ ТЕМПА
+       ========================================================= */
+
+    function formatPace(seconds) {
+
+      const minutes =
+        Math.floor(
+          seconds / 60
+        );
 
 
-    const pace=
-      totalSeconds/x.km;
+      const sec =
+        Math.round(
+          seconds % 60
+        );
 
 
-    if(
-      !fastest ||
-      pace<fastest.pace
-    ){
-
-      fastest={
-        ...x,
-        pace
-      };
-
-    }
-
-  });
-
-
-  if(fastest){
-
-    document.getElementById(
-      'fastestName'
-    ).textContent=
-      fastest.name;
-
-
-    document.getElementById(
-      'fastestValue'
-    ).textContent=
-      formatPace(
-        fastest.pace
+      return (
+        `${minutes}:${String(sec).padStart(2, "0")}`
       );
 
-  }
+    }
 
 
-  /*
-    САМЫЙ АКТИВНЫЙ
-  */
+    /* =========================================================
+       15. ОТРИСОВКА ВСЕГО САЙТА
+       ========================================================= */
 
-  const activity={};
+    function renderAll() {
 
+      renderGeneralStats();
 
-  runs.forEach(x=>{
+      renderMonths();
 
-    activity[x.name]=
-      (activity[x.name]||0)+1;
+      renderRatings();
 
-  });
+      renderNominations();
 
-
-  const active=
-    Object.entries(activity)
-      .sort(
-        (a,b)=>b[1]-a[1]
-      )[0];
+    }
 
 
-  if(active){
+    /* =========================================================
+       16. ПЕРВАЯ ЗАГРУЗКА
+       ========================================================= */
 
-    document.getElementById(
-      'activeName'
-    ).textContent=
-      active[0];
-
-
-    document.getElementById(
-      'activeValue'
-    ).textContent=
-      active[1] +
-      ' тренировок';
-
-  }
+    loadData();
 
 
-  /*
-    САМАЯ ДЛИННАЯ
-  */
+    /* =========================================================
+       17. АВТООБНОВЛЕНИЕ
+       Каждые 5 минут
+       ========================================================= */
 
-  const longest=
-    [...runs]
-      .sort(
-        (a,b)=>
-          b.km-a.km
-      )[0];
-
-
-  if(longest){
-
-    document.getElementById(
-      'longestName'
-    ).textContent=
-      longest.name;
-
-
-    document.getElementById(
-      'longestValue'
-    ).textContent=
-      longest.km.toFixed(1)+
-      ' км';
-
-  }
-
-
-  /*
-    БОЛЬШЕ ВСЕГО КИЛОМЕТРОВ
-  */
-
-  const kmRanking=
-    ranking(runs);
-
-
-  if(kmRanking.length){
-
-    document.getElementById(
-      'kmName'
-    ).textContent=
-      kmRanking[0].name;
-
-
-    document.getElementById(
-      'kmValue'
-    ).textContent=
-      kmRanking[0].km.toFixed(1)+
-      ' км';
-
-  }
-
-}
-
-
-/* =========================================================
-   PACE
-========================================================= */
-
-function formatPace(seconds){
-
-  const minutes=
-    Math.floor(
-      seconds/60
+    setInterval(
+      loadData,
+      5 * 60 * 1000
     );
 
 
-  const sec=
-    Math.round(
-      seconds%60
-    );
-
-
-  return (
-    minutes+
-    ':'+
-    String(sec).padStart(2,'0')+
-    ' мин/км'
-  );
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function showPage(
-  page,
-  button
-){
-
-  document
-    .querySelectorAll('.page')
-    .forEach(
-      x=>
-        x.classList.remove(
-          'active'
-        )
-    );
-
-
-  document
-    .getElementById(page)
-    .classList.add('active');
-
-
-  document
-    .querySelectorAll('.nav button')
-    .forEach(
-      x=>
-        x.classList.remove(
-          'active'
-        )
-    );
-
-
-  button.classList.add('active');
-
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-}
-
-
-/* =========================================================
-   RENDER ALL
-========================================================= */
-
-function renderAll(){
-
-  renderHome();
-
-  renderRatings();
-
-  renderStats();
-
-  renderNominations();
-
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-loadData();
-
-
-/*
-  Автоматическое обновление
-  каждые 5 минут.
-*/
-
-setInterval(
-  loadData,
-  5*60*1000
-);
-
-</script>
+  </script>
 
 </body>
+
 </html>
