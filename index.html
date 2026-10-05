@@ -119,8 +119,8 @@ a {
 }
 
 .brand-logo {
-  width: 72px;
-  height: 72px;
+  width: 92px;
+  height: 92px;
 
   object-fit: contain;
 
@@ -1102,8 +1102,8 @@ a {
   }
 
   .brand-logo {
-    width: 58px;
-    height: 58px;
+    width: 72px;
+    height: 72px;
   }
 
   .brand-title {
@@ -3707,60 +3707,7 @@ function renderNominations() {
     )[0];
 
 
-  /* =====================================================
-     САМАЯ РЕГУЛЯРНАЯ
-     ===================================================== */
-
-  const days = {};
-
-
-  runs.forEach(
-    run => {
-
-      if (
-        !days[run.name]
-      ) {
-        days[run.name] =
-          new Set();
-      }
-
-
-      days[run.name].add(
-
-        run.date
-          .toISOString()
-          .slice(
-            0,
-            10
-          )
-
-      );
-
-    }
-  );
-
-
-  const regular =
-
-    Object.entries(
-      days
-    )
-
-      .map(
-        ([name, set]) => ({
-
-          name,
-
-          days:
-            set.size
-
-        })
-      )
-
-      .sort(
-        (a, b) =>
-          b.days - a.days
-      )[0];
+ 
 
 
   /*
@@ -3980,60 +3927,6 @@ function renderNominations() {
             mostKm
               ? mostKm[1].toFixed(1)
                 + " км"
-              : "—"
-          }
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- ================================================
-         САМАЯ РЕГУЛЯРНАЯ
-         ================================================ -->
-
-    <div class="nomination-card">
-
-      <div class="nomination-icon-wrap">
-
-        <img
-          class="nomination-icon"
-          src="nomination_regular.png"
-          alt="Самая регулярная"
-        >
-
-      </div>
-
-
-      <h3 class="nomination-title">
-        Самая регулярная
-      </h3>
-
-
-      <div class="nomination-value">
-
-        <div class="nomination-name">
-
-          ${
-            regular
-              ? escapeHTML(
-                  regular.name
-                )
-              : "—"
-          }
-
-        </div>
-
-
-        <div class="nomination-result">
-
-          ${
-            regular
-              ? regular.days
-                + " дней"
               : "—"
           }
 
