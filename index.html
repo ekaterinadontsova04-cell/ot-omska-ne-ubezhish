@@ -2565,7 +2565,8 @@ function monthRuns(month) {
 
   return runs.filter(
     run =>
-      run.month === month
+      run.month === month &&
+      run.km > 0
   );
 
 }
