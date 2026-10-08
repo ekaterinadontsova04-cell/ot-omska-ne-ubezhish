@@ -390,6 +390,69 @@ a {
   line-height: 1.6;
 }
 
+.hero-story {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.16);
+}
+
+.hero-story-title {
+  margin: 0;
+  max-width: 760px;
+  color: white;
+  font-size: clamp(21px, 3vw, 30px);
+  line-height: 1.05;
+  font-weight: 950;
+  letter-spacing: -0.8px;
+}
+
+.hero-story-title span {
+  color: var(--orange);
+}
+
+.hero-story-text {
+  margin-top: 12px;
+  max-width: 700px;
+  color: rgba(255,255,255,0.72);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.hero-buttons {
+  margin-top: 18px;
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 9px;
+  background: var(--orange);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.hero-button:hover {
+  background: var(--orange-dark);
+  transform: translateY(-1px);
+}
+
+.hero-button.secondary {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.hero-button.secondary:hover {
+  background: rgba(255,255,255,0.18);
+}
+
 
 /* =========================================================
    СТАТИСТИКА В ЦИФРАХ
@@ -1068,6 +1131,8 @@ a {
 }
 
 
+
+
 /* =========================================================
    FOOTER
    ========================================================= */
@@ -1151,6 +1216,23 @@ a {
 
   .hero h2 {
     font-size: 39px;
+  }
+
+  .hero-story {
+    margin-top: 22px;
+    padding-top: 20px;
+  }
+
+  .hero-story-title {
+    font-size: 22px;
+  }
+
+  .hero-buttons {
+    gap: 8px;
+  }
+
+  .hero-button {
+    padding: 9px 13px;
   }
 
   .stats-grid {
@@ -1396,6 +1478,16 @@ a {
         Бежим вместе, считаем вместе и сохраняем
         наш сибирский характер в цифрах.
       </p>
+
+      <div class="hero-story">
+
+        <div class="hero-buttons">
+          <a href="#" class="hero-button">VK клуба</a>
+          <a href="#" class="hero-button secondary">Наш чат</a>
+          <a href="#" class="hero-button">Присоединиться</a>
+        </div>
+
+      </div>
 
     </div>
 
@@ -1709,7 +1801,6 @@ a {
 
 
 </main>
-
 
 
 <footer class="footer">
